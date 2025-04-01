@@ -1,0 +1,15 @@
+.venv
+
+examples/
+test/
+output/
+
+*.jpg
+*.png
+*.webp
+*.bmp
+*.jpeg
+
+
+
+
