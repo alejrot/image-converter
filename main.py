@@ -16,7 +16,7 @@ def thread_convert_image(src_path, dst_path, quality:int=95):
     im.save(dst_path, quality=quality)
 
 
-def process_task(src_paths, dst_dir, dst_ext):
+def process_task(src_paths, dst_dir, dst_ext, parent_folder:str|None=None):
     """This task creates a thread for each image to convert and awaits until finish. 
     """
 
@@ -25,9 +25,24 @@ def process_task(src_paths, dst_dir, dst_ext):
     for path in src_paths:
 
         # creating destiny path
-        src_path = Path(path).with_suffix(dst_ext)
-        dst_name = src_path.name
-        dst_path = Path(dst_dir).joinpath(dst_name)
+        src_path = Path(path)
+        if parent_folder == None:
+            # all the images will be created together
+            dst_name = src_path.name
+            dst_path = Path(dst_dir).joinpath(dst_name)
+            # new extention for image
+            dst_path = dst_path.with_suffix(dst_ext)
+        else:
+            # original directory's tree replicated
+            dst_subpath = src_path.relative_to(parent_folder)
+            dst_path = Path(dst_dir).joinpath(dst_subpath)
+            # subfolder created if it doesn't exist
+            subfolder = dst_path.parent
+            if subfolder.is_dir()==False:
+                subfolder.mkdir(parents=True)
+            # new extention and path for image
+            dst_path = dst_path.with_suffix(dst_ext)
+
 
         # converting images in parallel
         args = (path, dst_path, quality,)
@@ -35,17 +50,19 @@ def process_task(src_paths, dst_dir, dst_ext):
             target=thread_convert_image,
             args  =args
             ) 
-
         conv_thread.start()
         threads_list.append(conv_thread)
 
-    # awaits for conversion's end
+    # awaits for all image conversion's end
     for thread in threads_list:
         thread.join()
 
 
 # quality as percent
 quality = 95
+
+# original images organization 
+keep_organization = True
 
 # source folder and extention
 src_dir: str = "examples/"
@@ -56,6 +73,7 @@ src_ext: str = "*.webp"
 # dst_dir: str = "output/"
 dst_dir: str = "/dev/shm/image-converter/"   # RAM memory (only in Linux)
 dst_ext: str = ".jpg"
+
 
 # create destiny folder if it doesn't exists
 if Path(dst_dir).is_dir():
@@ -82,6 +100,12 @@ nro_images = len(src_paths)
 n = nro_images // cores
 print(f"Images found: {nro_images}")
 
+
+if keep_organization:
+    src_folder = Path(src_dir)
+else:
+    src_folder = None
+
 proccess_lists = []
 
 # image delivery in multiple cores  
@@ -90,8 +114,9 @@ for c in range(cores):
     m = c*n
     paths = src_paths[ m : m+n ]
 
-    args = (paths, dst_dir, dst_ext,)      
+    args = (paths, dst_dir, dst_ext, src_folder)      
     procc = Process(target=process_task, args=args) 
+    procc.daemon = True
     procc.start()
 
     proccess_lists.append(procc)
