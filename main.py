@@ -11,9 +11,14 @@ def thread_convert_image(src_path, dst_path, quality:int=95):
     """This thread saves the source image in the destiny path after its conversion.
     Quality is a percentage that defines compression: a high percentage means minimal quality loss.
     """
-    # conversion with Pillow
-    im = Image.open(src_path)
-    im.save(dst_path, quality=quality)
+    try:
+        # conversion with Pillow
+        im = Image.open(src_path)
+        im.save(dst_path, quality=quality)
+    except:
+        print(f"Image: {src_path} - unsupported image")
+
+
 
 
 def process_task(src_paths, dst_dir, dst_ext, parent_folder:str|None=None):
@@ -66,8 +71,8 @@ keep_organization = True
 
 # source folder and extention
 src_dir: str = "examples/"
-src_ext: str = "*.webp"
-# src_ext: str = "*.png"
+# src_ext: str = "*.webp"
+src_ext: str = "*.png"
 
 
 # destiny folder and extention
