@@ -67,6 +67,7 @@ keep_organization = True
 # source folder and extention
 src_dir: str = "examples/"
 src_ext: str = "*.webp"
+# src_ext: str = "*.png"
 
 
 # destiny folder and extention
@@ -97,8 +98,6 @@ cores = psutil.cpu_count(logical=False)
 print(f"Physical cores detected: {cores}")
 
 nro_images = len(src_paths)
-n = nro_images // cores
-print(f"Images found: {nro_images}")
 
 
 if keep_organization:
@@ -111,8 +110,7 @@ proccess_lists = []
 # image delivery in multiple cores  
 for c in range(cores):
 
-    m = c*n
-    paths = src_paths[ m : m+n ]
+    paths = src_paths[ c : nro_images: cores]
 
     args = (paths, dst_dir, dst_ext, src_folder)      
     procc = Process(target=process_task, args=args) 
