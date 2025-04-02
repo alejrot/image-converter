@@ -2,31 +2,34 @@
 
 import argparse
 
+program_name = "image-converter"
+version = '0.2'
+quality_default = 95
+
+
 # new arguments parser
 parser = argparse.ArgumentParser(
-    prog='Image Converter',
-    usage='%(prog)s [options]',
+    prog=program_name,
+    # usage='%(prog)s [options]',
+    usage=f'{program_name} [options]',
     description='Converts the input images to the chosen extention.',
     # epilog='Text at the bottom of help',
     )
     
-parser.version = '0.2'
 
-quality_default = 95
+parser.version = version
 
-source_type = parser.add_mutually_exclusive_group()
-source_type.title = "Input options"
-source_type.description = "Chooses image's source between a folder0s path and an image path's list."
-
-# source folder
-source_type.add_argument(
-    '-sf',
-    '--src-folder',
-    type=str,
-    default='.',
-    required=False,
-    help="Source folder's path."
+# program version
+parser.add_argument(
+    '-v',
+    '--version',
+    action='version',
     )
+    
+source_type = parser.add_argument_group()
+source_type.title = "Input options"
+source_type.description = "Chooses image's source between a folder's path and an image path's list."
+
 
 # source images
 source_type.add_argument(
@@ -39,6 +42,16 @@ source_type.add_argument(
     )
 
 
+# source folder
+source_type.add_argument(
+    '-sf',
+    '--src-folder',
+    type=str,
+    default='.',
+    required=False,
+    help="Source folder's path. Images will be searched there."
+    )
+
 # source image extention
 source_type.add_argument(
     '-se',
@@ -49,7 +62,6 @@ source_type.add_argument(
     required=False,
     help="Image's extention to be searched and converted. Values: '.bmp', '.webp', ect."
     )
-
 
 
 output_options = parser.add_argument_group()
@@ -107,26 +119,6 @@ recursive_options.add_argument(
     action='store_true',
     help="Replies the folder's source image organization at output."
     )
-
-
-general_options = parser.add_argument_group()
-general_options.help = "General options"
-general_options.description = "Some generic options."
-
-# program version
-general_options.add_argument(
-    '-v',
-    '--version',
-    action='version',
-    )
-    
-# general_options.add_argument(
-#     '-a',
-#     '--ayuda',
-#     action='help'
-#     )
-    
-
 
 
 
