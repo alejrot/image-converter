@@ -10,6 +10,11 @@ output/
 *.bmp
 *.jpeg
 
+*.JPG
+*.PNG
+*.WEBP
+*.BMP
+*.JPEG
 
 
-
+__pycache__/
