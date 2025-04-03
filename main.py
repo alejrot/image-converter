@@ -5,13 +5,18 @@ from multiprocessing import Process
 
 import psutil
 
-from code import input_args, process_task
+from code import parser
+from code import process_task
 
 
-# print(input_args)
+parser.version = '1.0'
+
+
+# arguments reading
+input_args = parser.parse_args()
+
+# arguments convertion
 dict_args = vars(input_args)
-
-
 
 
 # quality as percent
@@ -20,47 +25,92 @@ quality = dict_args['quality']
 # original images organization 
 keep_organization = dict_args['keep_organization']
 
+# recursive search
+recursive = dict_args['recursive']
+
 # source folder and extention
 src_dir: str = dict_args['src_folder']
 src_ext: str = dict_args['src_ext']
-# dict_args['src_images']            # !!!
+
+# image list
+src_list: list[str] = dict_args['src_images'] 
 
 # destiny folder and extention
 dst_dir: str = dict_args['dst_folder']
 dst_ext: str = dict_args['dst_ext']
 
-# create destiny folder if it doesn't exists
-if Path(dst_dir).is_dir():
-    print(f"folder already exists: {dst_dir}")
+
+start = time()
+
+
+
+
+if src_list == None or len(src_list) == 0: 
+
+
+    # search for images to convert
+    pattern = f"*{src_ext}"
+
+    if recursive:
+        src_paths = Path(src_dir).rglob(pattern)
+        print("Recursive search - enabled")
+    else:
+        src_paths = Path(src_dir).glob(pattern)
+        print("Single folder search - by default")
+
+    src_paths = list(src_paths)
+    nro_images = len(src_paths)
+
+    print(f"Converting images from folder: {src_dir}")
+    print(f"Source image extention: {src_ext}")
+
+    if keep_organization:
+        print("Keeping folder's organization.")
+        src_folder = Path(src_dir)
+    else:
+        print("All output images in the output directory.")
+        src_folder = None
+
+    print(f"Images found: {nro_images}")
 
 else:
-    print(f"creatign folder in {dst_dir}")
+    
+    # image list from arguments
+    src_paths = src_list
+    nro_images = len(src_paths)
+    
+    print("Converting images from input:")
+    for image in src_list:
+        print(image)
+
+
+    print(f"Images found: {nro_images}")
+    print("All output images in the output directory.")
+    src_folder = None
+
+
+
+
+# create destiny folder if it doesn't exists
+if Path(dst_dir).is_dir():
+    print(f"Folder already exists: {dst_dir}")
+
+else:
+    print(f"Creatign folder in {dst_dir}")
     Path(dst_dir).mkdir(
         parents=True
         )
 
 
-start = time()
+print(f"Output image extention: {dst_ext}")
 
-# search of images to convert
-pattern = f"*{src_ext}"
-src_paths = Path(src_dir).rglob(pattern)
-src_paths = list(src_paths)
 
+# image delivery in multiple cores  
 cores = psutil.cpu_count(logical=False)
-print(f"Physical cores detected: {cores}")
-
-nro_images = len(src_paths)
-
-
-if keep_organization:
-    src_folder = Path(src_dir)
-else:
-    src_folder = None
+print(f"CPU physical cores detected: {cores}")
 
 proccess_lists = []
 
-# image delivery in multiple cores  
 for c in range(cores):
 
     paths = src_paths[ c : nro_images: cores]
@@ -76,6 +126,9 @@ for c in range(cores):
 # await until all proccess finishes
 for procc in proccess_lists:
     procc.join()
+
+
+
 
 
 end = time()

@@ -1,9 +1,9 @@
-from code.input import input_args
+from code.input import parser
 from code.processing import process_task
 
 
 
 __all__ = [
-    "input_args",
+    "parser",
     "process_task",
     ]
