@@ -23,7 +23,6 @@ def thread_convert_image(src_path, dst_path, quality:int=95):
                 r,g,b,a = source
                 # A channel discarded
                 im = Image.merge("RGB", (r,g,b))
-                # im.save("9dzign_flame.jpg", quality=quality)
                 im.save(dst_path, quality=quality)
                 print(f"Image: {src_path} - transparency channel discarded")
             else:

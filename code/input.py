@@ -121,8 +121,6 @@ recursive_options.add_argument(
     )
 
 
-# arguments reading
-# input_args = parser.parse_args()
 
 if __name__=="__main__":
 
