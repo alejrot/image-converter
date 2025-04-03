@@ -9,7 +9,7 @@ from code import parser
 from code import process_task
 
 
-parser.version = '1.0'
+parser.version = '1.1'
 
 
 # arguments reading
