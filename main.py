@@ -38,14 +38,37 @@ def main(dict_args: dict)->bool:
 
     if src_list == None or len(src_list) == 0: 
 
-        # search for images to convert
+        # extention asked by user as search pattern
         pattern = f"*{src_ext}"
+        # extentions in lowercase: .jpg, .webp, .png
+        lower_pattern = pattern.lower()
+        # extentions in uppercase: .JPG, .WEBP, .PNG
+        upper_pattern = pattern.upper()
 
+
+        # search for images to convert
         if recursive:
-            src_paths = Path(src_dir).rglob(pattern)
+
+            # search with both extentions
+            lower_paths = Path(src_dir).rglob(lower_pattern)
+            upper_paths = Path(src_dir).rglob(upper_pattern )
+
+            # both lists are joined
+            src_paths = list(lower_paths)
+            src_paths.extend(list(upper_paths))
             print("Recursive search - enabled")
         else:
-            src_paths = Path(src_dir).glob(pattern)
+            # extentions in lowercase: .jpg, .webp, .png
+            lower_pattern = pattern.lower()
+            lower_paths = Path(src_dir).glob(lower_pattern)
+
+            # extentions in uppercase: .JPG, .WEBP, .PNG
+            upper_pattern = pattern.upper()
+            upper_paths = Path(src_dir).glob(upper_pattern )
+
+            # both lists are joined
+            src_paths = list(lower_paths)
+            src_paths.extend(list(upper_paths))
             print("Single folder search - by default")
 
         src_paths = list(src_paths)
