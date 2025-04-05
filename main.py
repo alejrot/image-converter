@@ -19,7 +19,7 @@ def main(dict_args: dict)->bool:
     quality = dict_args['quality']
 
     # original images organization 
-    keep_organization = dict_args['keep_organization']
+    keep_tree = dict_args['keep_tree']
 
     # recursive search
     recursive = dict_args['recursive']
@@ -58,8 +58,8 @@ def main(dict_args: dict)->bool:
         if nro_images == 0:
             return False
 
-        if keep_organization:
-            print("Keeping folder's organization.")
+        if keep_tree:
+            print("Keeping folder's organization in output.")
             src_folder = Path(src_dir)
         else:
             print("All output images in the output directory.")

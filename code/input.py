@@ -1,10 +1,11 @@
 
-
 import argparse
 
+from code.consts import Default
+
 program_name = "image-converter"
-version = '0.2'
-quality_default = 95
+version = '0.0'
+
 
 
 # new arguments parser
@@ -47,9 +48,9 @@ source_type.add_argument(
     '-sf',
     '--src-folder',
     type=str,
-    default='.',
+    default=Default.SRC_FOLDER.value,
     required=False,
-    help="Source folder's path. Images will be searched there."
+    help=f"Source folder's path. Images will be searched there. By default is {Default.SRC_FOLDER.value}"
     )
 
 # source image extention
@@ -57,10 +58,10 @@ source_type.add_argument(
     '-se',
     '--src-ext',
     type=str,
-    default='.webp',
+    default=Default.SRC_EXT.value,
     # choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
     required=False,
-    help="Image's extention to be searched and converted. Values: '.bmp', '.webp', ect."
+    help=f"Image's extention to be searched and converted. Values: '.bmp', '.webp', ect. By default is {Default.SRC_EXT.value}."
     )
 
 
@@ -73,9 +74,9 @@ output_options.add_argument(
     '-q',
     '--quality',
     type=int,
-    default=quality_default,
+    default=Default.QUALITY.value,
     required=False,
-    help=f'Quality percent. Higher quality means less losses but hight file size. By default is {quality_default}.'
+    help=f'Quality percent. Higher quality means less losses but hight file size. By default is {Default.QUALITY.value}.'
     )
 
 # destiny folder
@@ -83,9 +84,9 @@ output_options.add_argument(
     '-df',
     '--dst-folder',
     type=str,
-    default='.',
+    default=Default.DST_FOLDER.value,
     required=False,
-    help="Destiny folder's path."
+    help=f"Destiny folder's path. By default is {Default.DST_FOLDER.value}"
     )
 
 # destiny image extention
@@ -93,15 +94,15 @@ output_options.add_argument(
     '-de',
     '--dst-ext',
     type=str,
-    default='.jpg',
+    default=Default.DST_EXT.value,
     choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
     required=False,
-    help="Desired image's extention. Values: '.jpg', '.png', ect."
+    help=f"Desired image's extention. Values: '.jpg', '.png', ect. By default is {Default.DST_EXT.value}."
     )
 
 
 recursive_options = parser.add_argument_group()
-recursive_options.title = "Recursive options" 
+recursive_options.title = "Search options" 
 recursive_options.description = "Enables recursive search and output folder's delivery."
 
 # recursive search
@@ -115,9 +116,9 @@ recursive_options.add_argument(
 # keep image organization
 recursive_options.add_argument(
     '-k',
-    '--keep-organization',
+    '--keep-tree',
     action='store_true',
-    help="Replies the folder's source image organization at output."
+    help="Replies the folder's source image organization at output. Only works in recursive searching."
     )
 
 
