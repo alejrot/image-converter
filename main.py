@@ -119,7 +119,7 @@ def main(dict_args: dict)->bool:
     return True
 
 
-parser.version = '1.1.1'
+parser.version = '1.1.2'
 
 # arguments reading
 input_args = parser.parse_args()

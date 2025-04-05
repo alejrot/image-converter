@@ -70,7 +70,7 @@ The easier way to work is searching images by file extention in a specified fold
 The alternative way by a list of image paths, in that case the other input options are disabled.
 
 |short | long | explanation | 
-|---|----|---|---|
+|---|----|---|
 |`-si`|`--src-images`| image list|
 
 ### Output options
@@ -78,7 +78,7 @@ The alternative way by a list of image paths, in that case the other input optio
 The available options for output images are:
 
 |short | long | explanation | default value| 
-|---|----|---|---|---|
+|---|----|---|---|
 |`-df`|`--dst-folder`|destinantion folder's path|`output/` subfolder|
 |`-de`|`--dst-ext`|destination image's extention|`.jpg`|
 |`-k`|`--keep-tree`| keep input folder's tree at output (only for recursive search)| disabled |
