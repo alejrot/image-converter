@@ -43,6 +43,9 @@ def main(dict_args: dict)->bool:
     dst_ext: str = dict_args['dst_ext']
 
 
+
+    print("[green]Input options:")
+
     if src_list == None or len(src_list) == 0: 
 
         # search for images to convert
@@ -51,17 +54,20 @@ def main(dict_args: dict)->bool:
         src_paths = list(src_paths)
         nro_images = len(src_paths)
 
-        if recursive:
-            print("Recursive search - enabled")
-        else:
-            print("Single folder search - by default")
 
-        print(f"Converting images from folder: {src_dir}")
-        print(f"Source image extention: {src_ext}")
-        print(f"Images found: {nro_images}")
+        if recursive:
+            print("[yellow]Recursive search enabled")
+        else:
+            print("[yellow]Single search")
+
+        print(f"[blue]Converting images from folder: [yellow]{src_dir}")
+        print(f"[blue]Source image extention: [yellow]{src_ext}")
+        print(f"[blue]Images found: [yellow]{nro_images}")
         
         if nro_images == 0:
             return False
+
+        print("[green]Output options:")
 
         if keep_tree:
             print("Keeping folder's organization in output.")
@@ -76,34 +82,37 @@ def main(dict_args: dict)->bool:
         src_paths = src_list
         nro_images = len(src_paths)
 
-        print("Converting images from input:")
-        for image in src_list:
-            print(image)
+        print("[yellow]Converting images from input:")
 
-        print(f"Images: {nro_images}")
+
+        print(f"[blue]Images provided: [yellow]{nro_images}")
 
         if nro_images == 0:
             return False
             
-        print("All output images in the output directory.")
+        print("[green]Output options:")
+
+        print("[blue]All output images in the output directory.")
         src_folder = None
+
 
 
     # create destiny folder if it doesn't exists
     if Path(dst_dir).is_dir():
-        print(f"Folder already exists: {dst_dir}")
+        print(f"[blue]Destination folder already exists: [yellow]{dst_dir}")
 
     else:
-        print(f"Creatign folder in {dst_dir}")
+        print(f"[blue]Creatign destination folder in [yellow]{dst_dir}")
         Path(dst_dir).mkdir(
             parents=True
             )
 
-    print(f"Output image extention: {dst_ext}")
+    print(f"[blue]Output image extention: [yellow]{dst_ext}")
 
-    # image delivery in multiple cores  
-    cores = psutil.cpu_count(logical=False)
-    print(f"CPU physical cores detected: {cores}")
+    # # image delivery in multiple cores  
+    # cores = psutil.cpu_count(logical=False)
+    # print(f"CPU physical cores detected: {cores}")
+
 
     # shows progress bar - parallel proccess
     bar_procc = Process(target=processed_bar, args=(nro_images,)) 
@@ -131,7 +140,7 @@ def main(dict_args: dict)->bool:
     return True
 
 
-parser.version = '1.1.3'
+parser.version = '1.2.0'
 
 # arguments reading
 input_args = parser.parse_args()
