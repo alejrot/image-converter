@@ -9,6 +9,9 @@ import psutil
 # local module
 from code import parser
 from code import process_task
+from code import ext_search
+
+
 
 
 def main(dict_args: dict)->bool:
@@ -38,41 +41,16 @@ def main(dict_args: dict)->bool:
 
     if src_list == None or len(src_list) == 0: 
 
-        # extention asked by user as search pattern
-        pattern = f"*{src_ext}"
-        # extentions in lowercase: .jpg, .webp, .png
-        lower_pattern = pattern.lower()
-        # extentions in uppercase: .JPG, .WEBP, .PNG
-        upper_pattern = pattern.upper()
-
-
         # search for images to convert
-        if recursive:
-
-            # search with both extentions
-            lower_paths = Path(src_dir).rglob(lower_pattern)
-            upper_paths = Path(src_dir).rglob(upper_pattern )
-
-            # both lists are joined
-            src_paths = list(lower_paths)
-            src_paths.extend(list(upper_paths))
-            print("Recursive search - enabled")
-        else:
-            # extentions in lowercase: .jpg, .webp, .png
-            lower_pattern = pattern.lower()
-            lower_paths = Path(src_dir).glob(lower_pattern)
-
-            # extentions in uppercase: .JPG, .WEBP, .PNG
-            upper_pattern = pattern.upper()
-            upper_paths = Path(src_dir).glob(upper_pattern )
-
-            # both lists are joined
-            src_paths = list(lower_paths)
-            src_paths.extend(list(upper_paths))
-            print("Single folder search - by default")
+        src_paths = ext_search(src_dir, src_ext, recursive)
 
         src_paths = list(src_paths)
         nro_images = len(src_paths)
+
+        if recursive:
+            print("Recursive search - enabled")
+        else:
+            print("Single folder search - by default")
 
         print(f"Converting images from folder: {src_dir}")
         print(f"Source image extention: {src_ext}")
@@ -93,7 +71,7 @@ def main(dict_args: dict)->bool:
         # image list from arguments
         src_paths = src_list
         nro_images = len(src_paths)
-        
+
         print("Converting images from input:")
         for image in src_list:
             print(image)
