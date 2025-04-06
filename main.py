@@ -2,14 +2,18 @@
 from time import time
 from pathlib import Path
 from multiprocessing import Process
+from threading import Thread
 
 # packages
 import psutil
+from rich import print
 
 # local module
 from code import parser
 from code import process_task
 from code import ext_search
+from code import processed_bar
+
 
 
 
@@ -76,7 +80,6 @@ def main(dict_args: dict)->bool:
         for image in src_list:
             print(image)
 
-
         print(f"Images: {nro_images}")
 
         if nro_images == 0:
@@ -101,10 +104,17 @@ def main(dict_args: dict)->bool:
     # image delivery in multiple cores  
     cores = psutil.cpu_count(logical=False)
     print(f"CPU physical cores detected: {cores}")
+
+    # shows progress bar - parallel proccess
+    bar_procc = Process(target=processed_bar, args=(nro_images,)) 
+    bar_procc.daemon = True
+    bar_procc.start()
+
+    # image delivery in multiple proccess, each one with multiple threads
     proccess_lists = []
+    cores = psutil.cpu_count(logical=False)
 
     for c in range(cores):
-
         paths = src_paths[ c : nro_images: cores]
         args = (paths, dst_dir, dst_ext, src_folder, quality)      
         procc = Process(target=process_task, args=args) 
@@ -116,6 +126,7 @@ def main(dict_args: dict)->bool:
     # await until all proccess finishes
     for procc in proccess_lists:
         procc.join()
+
 
     return True
 

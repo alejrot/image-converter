@@ -1,5 +1,6 @@
 from code.input import parser
 from code.processing import process_task
+from code.processing import processed_bar
 from code.consts import Default
 from code.paths import ext_search
 from code.paths import relocate_path
@@ -11,4 +12,5 @@ __all__ = [
     "Default",
     "ext_search",
     "relocate_path",
+    "processed_bar",
     ]
