@@ -6,6 +6,7 @@ from multiprocessing import Value, Event, Lock
 from PIL import Image
 from rich.progress import Progress
 from rich import print
+import psutil
 
 # project code
 from code.paths import relocate_path
@@ -95,8 +96,22 @@ def process_task(src_paths, dst_dir, dst_ext, src_parent_folder:str|None=None, q
             target=convert_image,
             args  =args
             ) 
+
         conv_thread.start()
         threads_list.append(conv_thread)
+
+        # limit maximum parallell threads per proccess
+        h = psutil.cpu_count(logical=True)/psutil.cpu_count(logical=False)
+
+        if len(threads_list) > h:
+            # awaits until first thread end and discards it
+            thread = threads_list[0]
+            thread.join()
+            threads_list.remove( thread)
+            # if other threads have ended they are discarded too
+            alive_obj = filter(lambda x: x.is_alive(), threads_list)
+            threads_list = list(alive_obj)
+            
 
     # awaits for all image conversion's end
     for thread in threads_list:
