@@ -14,7 +14,7 @@ Some of the implemented features:
 - single and recursive folder exploration;
 - cloned subfolder tree and organization in output;
 - compression adjustable by user;
-- 4th image channel (*albedo*) erasing;
+- 4th image channel (*albedo*) erasing.
 
 
 ## Requirements
@@ -79,7 +79,7 @@ The available options for output images are:
 
 |short | long | explanation | default value| 
 |---|----|---|---|
-|`-df`|`--dst-folder`|destinantion folder's path|`output/` subfolder|
+|`-df`|`--dst-folder`|destination folder's path|`converted-images` folder inside user directory |
 |`-de`|`--dst-ext`|destination image's extention|`.jpg`|
 |`-k`|`--keep-tree`| keep input folder's tree at output (only for recursive search)| disabled |
 |`-q`|`--quality`| image quality   |`95`| 
@@ -99,6 +99,7 @@ Quality option enables output image compression but degrading image. By default 
 |`-v`|`--version`| version tag|
 
 ## Examples
+
 
 Command line help:
 
