@@ -43,7 +43,6 @@ def main(dict_args: dict)->bool:
     dst_ext: str = dict_args['dst_ext']
 
 
-
     print("[green]Input options:")
 
     if src_list == None or len(src_list) == 0: 
@@ -53,7 +52,6 @@ def main(dict_args: dict)->bool:
 
         src_paths = list(src_paths)
         nro_images = len(src_paths)
-
 
         if recursive:
             print("[yellow]Recursive search enabled")
@@ -70,10 +68,10 @@ def main(dict_args: dict)->bool:
         print("[green]Output options:")
 
         if keep_tree:
-            print("Keeping folder's organization in output.")
+            print("[yellow]Keeping folder's organization in output.")
             src_folder = Path(src_dir)
         else:
-            print("All output images in the output directory.")
+            print("[yellow]All output images in the output directory.")
             src_folder = None
 
     else:
@@ -84,7 +82,6 @@ def main(dict_args: dict)->bool:
 
         print("[yellow]Converting images from input:")
 
-
         print(f"[blue]Images provided: [yellow]{nro_images}")
 
         if nro_images == 0:
@@ -94,7 +91,6 @@ def main(dict_args: dict)->bool:
 
         print("[blue]All output images in the output directory.")
         src_folder = None
-
 
 
     # create destiny folder if it doesn't exists
@@ -108,11 +104,6 @@ def main(dict_args: dict)->bool:
             )
 
     print(f"[blue]Output image extention: [yellow]{dst_ext}")
-
-    # # image delivery in multiple cores  
-    # cores = psutil.cpu_count(logical=False)
-    # print(f"CPU physical cores detected: {cores}")
-
 
     # shows progress bar - parallel proccess
     bar_procc = Process(target=processed_bar, args=(nro_images,)) 
