@@ -7,14 +7,13 @@ from threading import Thread
 # packages
 import psutil
 from rich import print
+from rich.progress import Progress
 
 # local module
 from code import parser
 from code import process_task
 from code import ext_search
 from code import processed_bar
-
-
 
 
 
@@ -47,19 +46,32 @@ def main(dict_args: dict)->bool:
 
     if src_list == None or len(src_list) == 0: 
 
-        # search for images to convert
-        src_paths = ext_search(src_dir, src_ext, recursive)
 
-        src_paths = list(src_paths)
-        nro_images = len(src_paths)
 
         if recursive:
             print("[yellow]Recursive search enabled")
         else:
             print("[yellow]Single search")
 
-        print(f"[blue]Converting images from folder: [yellow]{src_dir}")
-        print(f"[blue]Source image extention: [yellow]{src_ext}")
+        print(f"[blue]Sorce folder: [yellow]{src_dir}")
+        print(f"[blue]Image extention: [yellow]{src_ext}")
+
+        src_paths = []
+        nro_images = 0
+
+        with Progress() as progress:
+
+            task_bar = progress.add_task("[green]Searching...", total=100, start=False)
+
+            # search for images to convert
+            src_paths = ext_search(src_dir, src_ext, recursive)
+
+            progress.update(task_bar, completed=100)
+
+            src_paths = list(src_paths)
+            nro_images = len(src_paths)
+
+
         print(f"[blue]Images found: [yellow]{nro_images}")
         
         if nro_images == 0:
