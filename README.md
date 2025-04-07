@@ -26,8 +26,11 @@ Some of the implemented features:
 ## Installation
 
 
+<details>
+<summary>
+Windows
+</summary>
 
-### Windows
 
 
 ```bash
@@ -36,14 +39,19 @@ source .venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
+</details>
 
-### Linux
+<details>
+<summary>
+Linux
+</summary>
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+</details>
 
 
 ## Usage and options
@@ -51,12 +59,15 @@ pip install -r requirements.txt
 So far it's can only be used with Python interpreter:
 
 ```bash
-py main.py <options>
+py main.py <arguments> 
 ```
 
 
 
-### Source options
+<details>
+<summary>
+Source options
+</summary>
 
 The easier way to work is searching images by file extention in a specified folder:
 
@@ -73,7 +84,13 @@ The alternative way by a list of image paths, in that case the other input optio
 |---|----|---|
 |`-si`|`--src-images`| image list|
 
-### Output options
+</details>
+
+
+<details>
+<summary>
+Output options
+</summary>
 
 The available options for output images are:
 
@@ -84,13 +101,16 @@ The available options for output images are:
 |`-k`|`--keep-tree`| keep input folder's tree at output (only for recursive search)| disabled |
 |`-q`|`--quality`| image quality   |`95`| 
 
-Quality option enables output image compression but degrading image. By default is 95 (very slow losses / lossless). It can be between 1 and 100.
+Quality option enables output image compression but degrading image. By default is 95 (very slow losses). It can be between 1 and 100.
+However not all formats can be compressed (see [Annex](#annex-image-formats)).
+
+</details>
 
 
-**Hint:** JPG images are very good for portraits, landscapes and drawings. Alternatively, PNG images are very good for technical schemas, diagrams, window screenshots, etc.
-
-
-### Generic options
+<details>
+<summary>
+Generic options
+</summary>
 
 
 |short | long | explanation | 
@@ -98,37 +118,105 @@ Quality option enables output image compression but degrading image. By default 
 |`-h`|`--help`| command line help |
 |`-v`|`--version`| version tag|
 
+</details>
+
+
+
 ## Examples
 
-
+<details>
+<summary>
 Command line help:
+</summary>
 
 ```bash
 python main.py --help
 ```
+</details>
 
-Converting particular images to `.jpg` - all to same folder:
+
+<details>
+<summary>
+Converting particular images to JPG - all to same folder:
+</summary>
 
 ```bash
 python main.py --src-image img1.webp img2.png ... --dst-folder output/ 
 ```
 
-Recursive search of `.webp` images - keeping folder structure:
+
+</details>
+
+<details>
+<summary>
+Recursive search of WEBP images - keeping folder structure:
+</summary>
 
 ```bash
 python main.py --src-folder examples/ --dst-folder output/ -r -k
 ```
+</details>
 
+<details>
+<summary>
 Adding image compression to output images:
+</summary>
 
 ```bash
 python main.py --src-folder examples/ --dst-folder output/ -r -k --quality 50 
 ```
+</details>
 
-Single search - input `.bmp` images, output images as `.png`:
+<details>
+<summary>
+Single search - input BMP images, output images as PNG:
+</summary>
 
 ```bash
 python main.py --src-folder examples/ --dst-folder output/  -src-ext .bmp  -dst-ext .png  
 ```
+</details>
 
+
+## Annex: image formats
+
+
+### JPG
+
+JPG images are very good for portraits, landscapes and drawings.
+Some of its properties:
+ 
+- lossy format image;
+- supports image compression;
+- widely used and highly compatibility.
+
+
+### PNG
+
+PNG images are very good for technical schemas, diagrams, window screenshots, etc;
+however is often used for portraits, landscapes and drawings.
+Some of its properties:
+
+- lossless format image;
+- doesn't support image compression;
+- supports 4th channel image (*albedo*).
+- widely used and highly compatibility.
+
+**Warning:** PNG diagrams could be degraded when are converted to other formats,
+specially colours could be changed.
+
+
+### WEBP
+
+WEBP is a newer image format trying to overcome JPG and PNG formats.
+Some of its properties:
+
+- supports lossless and lossy image compression;
+- better quality image and lower space disk than JPG at high compression rates (*lossy*);
+- lower image size than PNG with *lossless* compression - around 25% less;
+- supports 4th channel image (*albedo*).
+- not so extended use and compatibility as JPG and PNG but rising.
+
+
+This program **only does lossy** compression during conversion.
 
