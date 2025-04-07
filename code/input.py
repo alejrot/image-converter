@@ -92,7 +92,7 @@ output_options.add_argument(
     '--dst-ext',
     type=str,
     default=Default.DST_EXT.value,
-    choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
+    # choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
     required=False,
     help=f"Desired image's extention. Values: '.jpg', '.png', ect. By default is {Default.DST_EXT.value}."
     )
