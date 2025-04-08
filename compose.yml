@@ -1,0 +1,12 @@
+services:
+
+  image-converter:
+    container_name: image-converter
+    # build: .
+    image: image-converter:latest
+    security_opt: 
+      - label=disable
+    volumes: 
+     - ./:/code
+    # stdin_open: true
+    tty: true
