@@ -2,12 +2,7 @@
 from time import time
 from pathlib import Path
 from multiprocessing import Process
-from threading import Thread
-
-# packages
-import psutil
-from rich import print
-from rich.progress import Progress
+from multiprocessing import freeze_support
 
 # local module
 from code import parser
@@ -15,6 +10,10 @@ from code import process_task
 from code import ext_search
 from code import processed_bar
 
+# packages
+import psutil
+from rich import print
+from rich.progress import Progress
 
 
 def main(dict_args: dict)->bool:
@@ -35,7 +34,7 @@ def main(dict_args: dict)->bool:
     src_ext: str = dict_args['src_ext']
 
     # image list
-    src_list: list[str] = dict_args['src_images'] 
+    src_list: list[str] = dict_args['src_images']
 
     # destiny folder and extention
     dst_dir: str = dict_args['dst_folder']
@@ -44,9 +43,7 @@ def main(dict_args: dict)->bool:
 
     print("[green]Input options:")
 
-    if src_list == None or len(src_list) == 0: 
-
-
+    if src_list is None or len(src_list) == 0:
 
         if recursive:
             print("[yellow]Recursive search enabled")
@@ -73,12 +70,10 @@ def main(dict_args: dict)->bool:
 
 
         print(f"[blue]Images found: [yellow]{nro_images}")
-        
         if nro_images == 0:
             return False
 
         print("[green]Output options:")
-
         if keep_tree:
             print("[yellow]Keeping folder's organization in output.")
             src_folder = Path(src_dir)
@@ -87,18 +82,15 @@ def main(dict_args: dict)->bool:
             src_folder = None
 
     else:
-        
         # image list from arguments
         src_paths = src_list
         nro_images = len(src_paths)
 
         print("[yellow]Converting images from input:")
-
         print(f"[blue]Images provided: [yellow]{nro_images}")
-
         if nro_images == 0:
             return False
-            
+
         print("[green]Output options:")
 
         print("[blue]All output images in the output directory.")
@@ -118,7 +110,7 @@ def main(dict_args: dict)->bool:
     print(f"[blue]Output image extention: [yellow]{dst_ext}")
 
     # shows progress bar - parallel proccess
-    bar_procc = Process(target=processed_bar, args=(nro_images,)) 
+    bar_procc = Process(target=processed_bar, args=(nro_images,))
     bar_procc.daemon = True
     bar_procc.start()
 
@@ -128,8 +120,8 @@ def main(dict_args: dict)->bool:
 
     for c in range(cores):
         paths = src_paths[ c : nro_images: cores]
-        args = (paths, dst_dir, dst_ext, src_folder, quality)      
-        procc = Process(target=process_task, args=args) 
+        args = (paths, dst_dir, dst_ext, src_folder, quality)
+        procc = Process(target=process_task, args=args)
         procc.daemon = True
         procc.start()
         proccess_lists.append(procc)
@@ -151,21 +143,17 @@ input_args = parser.parse_args()
 # arguments convertion
 dict_args = vars(input_args)
 
-# required in Windows and Pyinstaller 
+# required in Windows and Pyinstaller
 if __name__ == "__main__":
-    from multiprocessing import freeze_support
+
     freeze_support()
 
     start = time()
-
     images_found = main(dict_args=dict_args)
-
     end = time()
 
-    if images_found:
-
+    if images_found is True:
         print(f"Elapsed time: {(end-start)*1000 :7.6} mseg")
 
     else:
-
         print("No images found - Cancelled")

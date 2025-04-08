@@ -1,6 +1,8 @@
-from pathlib import Path
 from threading import Thread
 from multiprocessing import Value, Event, Lock
+
+# project code
+from code.paths import relocate_path
 
 # packages
 from PIL import Image
@@ -8,8 +10,6 @@ from rich.progress import Progress
 from rich import print
 import psutil
 
-# project code
-from code.paths import relocate_path
 
 
 # sync and global elements
@@ -22,7 +22,7 @@ processed_event   = Event()
 
 def processed_bar(total_count:int):
     """Shows a progress bar showing how many images were processed."""
-    global processed_counter
+    # global processed_counter
     with Progress() as progress:
 
         task = progress.add_task("[green]Processing...", total=total_count)
@@ -64,7 +64,7 @@ def convert_image(src_path, dst_path, quality:int=95):
                 print(f"Image: {src_path} - unsupported image")
     
     finally:
-        
+        global processed_counter, processed_event
         # Orders the progress bar counter and update it
         processed_counter.value += 1
         processed_event.set()
@@ -86,7 +86,7 @@ def process_task(src_paths, dst_dir, dst_ext, src_parent_folder:str|None=None, q
         subfolder = dst_path.parent
         # the lock is to prevent unlikely but possible folder overwrite and program crash
         folder_lock.acquire()
-        if subfolder.is_dir()==False:
+        if not subfolder.is_dir():
             subfolder.mkdir(parents=True)
         folder_lock.release()
 
@@ -95,7 +95,7 @@ def process_task(src_paths, dst_dir, dst_ext, src_parent_folder:str|None=None, q
         conv_thread = Thread(
             target=convert_image,
             args  =args
-            ) 
+            )
 
         conv_thread.start()
         threads_list.append(conv_thread)
@@ -111,7 +111,7 @@ def process_task(src_paths, dst_dir, dst_ext, src_parent_folder:str|None=None, q
             # if other threads have ended they are discarded too
             alive_obj = filter(lambda x: x.is_alive(), threads_list)
             threads_list = list(alive_obj)
-            
+
 
     # awaits for all image conversion's end
     for thread in threads_list:
