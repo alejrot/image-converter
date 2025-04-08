@@ -151,17 +151,21 @@ input_args = parser.parse_args()
 # arguments convertion
 dict_args = vars(input_args)
 
+# required in Windows and Pyinstaller 
+if __name__ == "__main__":
+    from multiprocessing import freeze_support
+    freeze_support()
 
-start = time()
+    start = time()
 
-images_found = main(dict_args=dict_args)
+    images_found = main(dict_args=dict_args)
 
-end = time()
+    end = time()
 
-if images_found:
+    if images_found:
 
-    print(f"Elapsed time: {(end-start)*1000 :7.6} mseg")
+        print(f"Elapsed time: {(end-start)*1000 :7.6} mseg")
 
-else:
+    else:
 
-    print("No images found - Cancelled")
+        print("No images found - Cancelled")
