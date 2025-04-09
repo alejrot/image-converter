@@ -1,4 +1,4 @@
-from code.input import parser
+from code.args import parser
 from code.processing import process_task, processed_bar
 from code.consts import DefaultValue
 from code.paths import ext_search, relocate_path

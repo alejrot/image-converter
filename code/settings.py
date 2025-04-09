@@ -13,11 +13,10 @@ from code.consts import Settings, ConfigKeys, DefaultValue
 from rich import print
 
 
-def reading_json(settings_path):
+def reading_json(settings_path)-> dict|None:
     """Reads JSON settings file.
     Returns a dictionary with file data if it is found; otherwise returns 'None'.
     """
-
     if Path(settings_path).is_file():
         dict_data = dict()
         with open(settings_path, 'r', encoding='utf-8') as json_file:
@@ -27,7 +26,7 @@ def reading_json(settings_path):
         return None
 
 
-def writing_json(settings_path, dict_data):
+def writing_json(settings_path, dict_data)->bool:
     """Writes settings data as JSON file.
     Returns 'True if file is created, otherwise returns 'False'.
     """
@@ -70,7 +69,7 @@ def find_json()->str:
     return settings_path
 
 
-def write_default_settings():
+def write_default_settings()->bool:
     """Saves the default values in config file."""
     
     default_data = dict()
