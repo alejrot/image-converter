@@ -36,6 +36,9 @@ def main(dict_args: dict)->bool:
     src_dir: str = dict_args['src_folder']
     src_ext: str = dict_args['src_ext']
 
+    src_dir = Path(src_dir).expanduser()
+    src_dir = str(src_dir)
+
     # image list
     src_list: list[str] = dict_args['src_images']
 
@@ -43,6 +46,8 @@ def main(dict_args: dict)->bool:
     dst_dir: str = dict_args['dst_folder']
     dst_ext: str = dict_args['dst_ext']
 
+    dst_dir = Path(dst_dir).expanduser()
+    dst_dir = str(dst_dir)
 
     print("[green]Input options:")
 
@@ -138,9 +143,9 @@ def main(dict_args: dict)->bool:
     return True
 
 
-parser.version = '1.2.0'
+parser.version = '1.3.0'
 
-write_default_settings()
+# write_default_settings()
 
 # arguments reading
 input_args = parser.parse_args()

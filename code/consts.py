@@ -1,22 +1,27 @@
 from enum import Enum
-from pathlib import Path
+# from pathlib import Path
 
 
 
 
 
 
-destiny_path = Path("~/converted-images/").expanduser()
+# destiny_path = Path("~/converted-images/").expanduser()
 
 # default values for software usage
 class DefaultValue(Enum):
     """Precharged arguments - used when it's values are not given."""
     QUALITY     = 95
     SRC_FOLDER  = "."
-    DST_FOLDER  = str(destiny_path)
+    DST_FOLDER  = "~/converted-images/"
     SRC_EXT     = ".webp"
     DST_EXT     = ".jpg"
-
+    KEEP_TREE     = False
+    RECURSIVE     = False
+    # not implemented yet
+    OVERRIDE      = False
+    THEME         = "light"
+    LANGUAGE      = "EN"
 
 # keys for user config files: JSON, YAML, ect
 class ConfigKeys(Enum):
@@ -26,9 +31,9 @@ class ConfigKeys(Enum):
     SRC_EXT       = "src_extention"
     DST_EXT       = "dst_extention"
     QUALITY       = "quality"
-    # not implemented yet
     KEEP_TREE     = "keep_tree"
     RECURSIVE     = "recursive"
+    # not implemented yet
     OVERRIDE      = "override"
     THEME         = "theme"
     LANGUAGE      = "language"

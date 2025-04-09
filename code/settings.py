@@ -58,18 +58,11 @@ def find_json()->str:
     # composing file path
     settings_path = settings_path.joinpath(Settings.FILENAME.value)
     settings_path = settings_path.expanduser()
-    parent_folder = settings_path.parent
-
-    if not parent_folder.is_dir():
-        Path.mkdir(parent_folder, parents=True, exist_ok=True)
-        print("Settings folder created")
-    else:
-        print("Settings folder already exists")
 
     return settings_path
 
 
-def write_default_settings()->bool:
+def write_default_settings(overwrite:bool=False)->bool:
     """Saves the default values in config file."""
     
     default_data = dict()
@@ -78,13 +71,24 @@ def write_default_settings()->bool:
     default_data[ConfigKeys.SRC_EXT.value] = DefaultValue.SRC_EXT.value
     default_data[ConfigKeys.DST_FOLDER.value] = DefaultValue.DST_FOLDER.value
     default_data[ConfigKeys.SRC_FOLDER.value] = DefaultValue.SRC_FOLDER.value
-
     default_data[ConfigKeys.QUALITY.value] = DefaultValue.QUALITY.value
+    default_data[ConfigKeys.KEEP_TREE.value] = DefaultValue.KEEP_TREE.value
+    default_data[ConfigKeys.RECURSIVE.value] = DefaultValue.RECURSIVE.value
+    # not implemented yet
+    default_data[ConfigKeys.OVERRIDE.value] = DefaultValue.OVERRIDE.value
+    default_data[ConfigKeys.THEME.value] = DefaultValue.THEME.value
+    default_data[ConfigKeys.LANGUAGE.value] = DefaultValue.LANGUAGE.value
     
     # JSON path
     settings_path = find_json()
+    # if config folder doesn't exists it will be created 
+    parent_folder = settings_path.parent
+    if not parent_folder.is_dir():
+        Path.mkdir(parent_folder, parents=True, exist_ok=True)
+        print("Settings folder created")
 
-    if not settings_path.is_file():
+    # if config file doesn't exists it will be created 
+    if not settings_path.is_file() or overwrite:
         r = writing_json(settings_path, default_data)
         if r:
             print("Settings file created/overwrote")

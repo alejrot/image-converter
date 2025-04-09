@@ -1,24 +1,31 @@
+"""This module manages the program arguments and reads config values as default.
+"""
 
 import argparse
 
-from code.consts import DefaultValue
+from code.consts import ConfigKeys
+from code.settings import reading_json, find_json, write_default_settings
 
-program_name = "image-converter"
-version = '0.0'
+PROGRAM_NAME = "image-converter"
 
+
+# create default config files if it doesnt exist
+write_default_settings()
+# read config file
+user_dict = reading_json(find_json())
 
 
 # new arguments parser
 parser = argparse.ArgumentParser(
-    prog=program_name,
+    prog=PROGRAM_NAME,
     # usage='%(prog)s [options]',
-    usage=f'{program_name} [options]',
+    usage=f'{PROGRAM_NAME} [options]',
     description='Converts the input images to the chosen extention.',
     # epilog='Text at the bottom of help',
     )
-    
 
-parser.version = version
+
+parser.version = '0.0'
 
 # program version
 parser.add_argument(
@@ -26,7 +33,7 @@ parser.add_argument(
     '--version',
     action='version',
     )
-    
+
 input_options = parser.add_argument_group()
 input_options.title = "Input options"
 input_options.description = "Chooses image's source between a folder's path and an image path's list."
@@ -37,9 +44,9 @@ input_options.add_argument(
     '-sf',
     '--src-folder',
     type=str,
-    default=DefaultValue.SRC_FOLDER.value,
+    default = user_dict[ConfigKeys.SRC_FOLDER.value],
     required=False,
-    help=f"Source folder's path. Images will be searched there. By default is {DefaultValue.SRC_FOLDER.value}"
+    help="Source folder's path. Images will be searched there."
     )
 
 # source image extention
@@ -47,10 +54,10 @@ input_options.add_argument(
     '-se',
     '--src-ext',
     type=str,
-    default=DefaultValue.SRC_EXT.value,
+    default=user_dict[ConfigKeys.SRC_EXT.value],
     # choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
     required=False,
-    help=f"Image's extention to be searched and converted. Values: '.bmp', '.webp', ect. By default is {DefaultValue.SRC_EXT.value}."
+    help="Image's extention to be searched and converted. Values: '.bmp', '.webp', ect."
     )
 
 # recursive search
@@ -58,7 +65,7 @@ input_options.add_argument(
     '-r',
     '--recursive',
     action='store_true',
-    help="Enables the recursive search in source folder. By default is 'False'."
+    help="Enables the recursive search in source folder."
     )
 
 # source images
@@ -81,9 +88,9 @@ output_options.add_argument(
     '-df',
     '--dst-folder',
     type=str,
-    default=DefaultValue.DST_FOLDER.value,
+    default=user_dict[ConfigKeys.DST_FOLDER.value],
     required=False,
-    help=f"Destiny folder's path. By default is {DefaultValue.DST_FOLDER.value}"
+    help="Destiny folder's path."
     )
 
 # destiny image extention
@@ -91,10 +98,9 @@ output_options.add_argument(
     '-de',
     '--dst-ext',
     type=str,
-    default=DefaultValue.DST_EXT.value,
-    # choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
+    default=user_dict[ConfigKeys.DST_EXT.value],
     required=False,
-    help=f"Desired image's extention. Values: '.jpg', '.png', ect. By default is {DefaultValue.DST_EXT.value}."
+    help="Desired image's extention. Values: '.jpg', '.png', ect."
     )
 
 
@@ -112,13 +118,10 @@ output_options.add_argument(
     '-q',
     '--quality',
     type=int,
-    default=DefaultValue.QUALITY.value,
+    default=user_dict[ConfigKeys.QUALITY.value],
     required=False,
-    help=f'Quality percent. Higher quality means less losses but hight file size. By default is {DefaultValue.QUALITY.value}.'
+    help='Quality percent. Higher quality means less losses but hight file size.'
     )
-
-
-
 
 
 if __name__=="__main__":
