@@ -9,6 +9,8 @@ from code import parser
 from code import process_task
 from code import ext_search
 from code import processed_bar
+from code import write_default_settings
+
 
 # packages
 import psutil
@@ -19,6 +21,7 @@ from rich.progress import Progress
 def main(dict_args: dict)->bool:
     """Image search, delivery and parallel processing in the same function.
     Returns 'True' if images were found, counter case returns 'False'"""
+
 
     # quality as percent
     quality = dict_args['quality']
@@ -136,6 +139,8 @@ def main(dict_args: dict)->bool:
 
 
 parser.version = '1.2.0'
+
+write_default_settings()
 
 # arguments reading
 input_args = parser.parse_args()
