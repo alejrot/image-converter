@@ -1,7 +1,7 @@
 
 import argparse
 
-from code.consts import Default
+from code.consts import DefaultValue
 
 program_name = "image-converter"
 version = '0.0'
@@ -37,9 +37,9 @@ input_options.add_argument(
     '-sf',
     '--src-folder',
     type=str,
-    default=Default.SRC_FOLDER.value,
+    default=DefaultValue.SRC_FOLDER.value,
     required=False,
-    help=f"Source folder's path. Images will be searched there. By default is {Default.SRC_FOLDER.value}"
+    help=f"Source folder's path. Images will be searched there. By default is {DefaultValue.SRC_FOLDER.value}"
     )
 
 # source image extention
@@ -47,10 +47,10 @@ input_options.add_argument(
     '-se',
     '--src-ext',
     type=str,
-    default=Default.SRC_EXT.value,
+    default=DefaultValue.SRC_EXT.value,
     # choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
     required=False,
-    help=f"Image's extention to be searched and converted. Values: '.bmp', '.webp', ect. By default is {Default.SRC_EXT.value}."
+    help=f"Image's extention to be searched and converted. Values: '.bmp', '.webp', ect. By default is {DefaultValue.SRC_EXT.value}."
     )
 
 # recursive search
@@ -81,9 +81,9 @@ output_options.add_argument(
     '-df',
     '--dst-folder',
     type=str,
-    default=Default.DST_FOLDER.value,
+    default=DefaultValue.DST_FOLDER.value,
     required=False,
-    help=f"Destiny folder's path. By default is {Default.DST_FOLDER.value}"
+    help=f"Destiny folder's path. By default is {DefaultValue.DST_FOLDER.value}"
     )
 
 # destiny image extention
@@ -91,10 +91,10 @@ output_options.add_argument(
     '-de',
     '--dst-ext',
     type=str,
-    default=Default.DST_EXT.value,
+    default=DefaultValue.DST_EXT.value,
     # choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
     required=False,
-    help=f"Desired image's extention. Values: '.jpg', '.png', ect. By default is {Default.DST_EXT.value}."
+    help=f"Desired image's extention. Values: '.jpg', '.png', ect. By default is {DefaultValue.DST_EXT.value}."
     )
 
 
@@ -112,9 +112,9 @@ output_options.add_argument(
     '-q',
     '--quality',
     type=int,
-    default=Default.QUALITY.value,
+    default=DefaultValue.QUALITY.value,
     required=False,
-    help=f'Quality percent. Higher quality means less losses but hight file size. By default is {Default.QUALITY.value}.'
+    help=f'Quality percent. Higher quality means less losses but hight file size. By default is {DefaultValue.QUALITY.value}.'
     )
 
 

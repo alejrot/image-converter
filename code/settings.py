@@ -7,13 +7,13 @@ import sys
 from pathlib import Path
 
 # project code
-from code.consts import Settings
+from code.consts import Settings, ConfigKeys, DefaultValue
 
 # packages
 from rich import print
 
 
-def reading_settings():
+def reading_json(settings_path):
     """Reads JSON settings file.
     Returns a dictionary with file data if it is found; otherwise returns 'None'.
     """
@@ -27,7 +27,7 @@ def reading_settings():
         return None
 
 
-def writing_settings(dict_data):
+def writing_json(settings_path, dict_data):
     """Writes settings data as JSON file.
     Returns 'True if file is created, otherwise returns 'False'.
     """
@@ -38,35 +38,65 @@ def writing_settings(dict_data):
 
 
 
+def find_json()->str:
+    """Returns the data path to the JSON settings file."""
 
-# choosing configuration path
-if sys.platform == "linux":
-
-    print("[bold white]System: GNU/Linux")
-    settings_path = Path(Settings.FOLDER_LINUX.value)
-
-
-elif sys.platform == "win32" or sys.platform == "cygwin":
-
-    print("[bold white]System: Windows")
-    settings_path = Path(Settings.FOLDER_WINDOWS.value)
-
-else:
-    print("[bold white]System: Other systems")
-    print("Not implemented")
-    settings_path = Path(Settings.FOLDER_OTHER.value)
+    # choosing configuration path
+    if sys.platform == "linux":
+        print("[bold white]System: GNU/Linux")
+        settings_path = Path(Settings.FOLDER_LINUX.value)
 
 
-# composing file path
-# settings_path = Path(settings_folder)
-settings_path = settings_path.joinpath(Settings.FILENAME.value)
-settings_path = settings_path.expanduser()
+    elif sys.platform == "win32" or sys.platform == "cygwin":
+        print("[bold white]System: Windows")
+        settings_path = Path(Settings.FOLDER_WINDOWS.value)
 
-parent_folder = settings_path.parent
+    else:
+        print("[bold white]System: Other systems")
+        print("Not implemented")
+        settings_path = Path(Settings.FOLDER_OTHER.value)
 
-if not parent_folder.is_dir():
-    Path.mkdir(parent_folder, parents=True, exist_ok=True)
-    print("Folder created")
+    # composing file path
+    settings_path = settings_path.joinpath(Settings.FILENAME.value)
+    settings_path = settings_path.expanduser()
+    parent_folder = settings_path.parent
+
+    if not parent_folder.is_dir():
+        Path.mkdir(parent_folder, parents=True, exist_ok=True)
+        print("Settings folder created")
+    else:
+        print("Settings folder already exists")
+
+    return settings_path
+
+
+def write_default_settings():
+    """Saves the default values in config file."""
+    
+    default_data = dict()
+
+    default_data[ConfigKeys.DST_EXT.value] = DefaultValue.DST_EXT.value
+    default_data[ConfigKeys.SRC_EXT.value] = DefaultValue.SRC_EXT.value
+    default_data[ConfigKeys.DST_FOLDER.value] = DefaultValue.DST_FOLDER.value
+    default_data[ConfigKeys.SRC_FOLDER.value] = DefaultValue.SRC_FOLDER.value
+
+    default_data[ConfigKeys.QUALITY.value] = DefaultValue.QUALITY.value
+    
+    # JSON path
+    settings_path = find_json()
+
+    if not settings_path.is_file():
+        r = writing_json(settings_path, default_data)
+        if r:
+            print("Settings file created/overwrote")
+        else:
+            print("Cannot create settings file")
+        return r
+    else:
+        print("Settings file already exists")
+        return False
+
+
 
 
 
