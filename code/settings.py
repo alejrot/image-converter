@@ -13,6 +13,21 @@ from code.consts import Settings, ConfigKeys, DefaultValue
 from rich import print
 
 
+
+default_data = {
+    f"{ConfigKeys.DST_EXT.value}" : DefaultValue.DST_EXT.value,
+    f"{ConfigKeys.SRC_EXT.value}" : DefaultValue.SRC_EXT.value,
+    f"{ConfigKeys.DST_FOLDER.value}" : DefaultValue.DST_FOLDER.value,
+    f"{ConfigKeys.SRC_FOLDER.value}" : DefaultValue.SRC_FOLDER.value,
+    f"{ConfigKeys.QUALITY.value}" : DefaultValue.QUALITY.value,
+    f"{ConfigKeys.KEEP_TREE.value}" : DefaultValue.KEEP_TREE.value,
+    f"{ConfigKeys.RECURSIVE.value}" : DefaultValue.RECURSIVE.value,
+    f"{ConfigKeys.OVERRIDE.value}" : DefaultValue.OVERRIDE.value,
+    f"{ConfigKeys.THEME.value}" : DefaultValue.THEME.value,
+    f"{ConfigKeys.LANGUAGE.value}" : DefaultValue.LANGUAGE.value,
+}
+
+
 def reading_json(settings_path)-> dict|None:
     """Reads JSON settings file.
     Returns a dictionary with file data if it is found; otherwise returns 'None'.
@@ -62,22 +77,8 @@ def find_json()->str:
     return settings_path
 
 
-def write_default_settings(overwrite:bool=False)->bool:
+def write_default_settings()->bool:
     """Saves the default values in config file."""
-    
-    default_data = dict()
-
-    default_data[ConfigKeys.DST_EXT.value] = DefaultValue.DST_EXT.value
-    default_data[ConfigKeys.SRC_EXT.value] = DefaultValue.SRC_EXT.value
-    default_data[ConfigKeys.DST_FOLDER.value] = DefaultValue.DST_FOLDER.value
-    default_data[ConfigKeys.SRC_FOLDER.value] = DefaultValue.SRC_FOLDER.value
-    default_data[ConfigKeys.QUALITY.value] = DefaultValue.QUALITY.value
-    default_data[ConfigKeys.KEEP_TREE.value] = DefaultValue.KEEP_TREE.value
-    default_data[ConfigKeys.RECURSIVE.value] = DefaultValue.RECURSIVE.value
-    # not implemented yet
-    default_data[ConfigKeys.OVERRIDE.value] = DefaultValue.OVERRIDE.value
-    default_data[ConfigKeys.THEME.value] = DefaultValue.THEME.value
-    default_data[ConfigKeys.LANGUAGE.value] = DefaultValue.LANGUAGE.value
     
     # JSON path
     settings_path = find_json()
@@ -88,17 +89,12 @@ def write_default_settings(overwrite:bool=False)->bool:
         print("Settings folder created")
 
     # if config file doesn't exists it will be created 
-    if not settings_path.is_file() or overwrite:
-        r = writing_json(settings_path, default_data)
-        if r:
-            print("Settings file created/overwrote")
-        else:
-            print("Cannot create settings file")
-        return r
+    if writing_json(settings_path, default_data):
+        print("Settings file created/overwrote")
+        return True
     else:
-        print("Settings file already exists")
-        return False
-
+        print("Cannot create settings file")
+        return False 
 
 
 

@@ -2,18 +2,24 @@
 """
 
 import argparse
+from copy import deepcopy
+
 
 from code.consts import ConfigKeys
-from code.settings import reading_json, find_json, write_default_settings
+# from code.settings import reading_json, find_json, write_default_settings
+from code.settings import default_data
+
 
 PROGRAM_NAME = "image-converter"
 
 
 # create default config files if it doesnt exist
-write_default_settings()
-# read config file
-user_dict = reading_json(find_json())
+# write_default_settings()
+# # read config file
+# user_dict = reading_json(find_json())
 
+# copy of default program parameters
+user_dict = deepcopy(default_data)
 
 # new arguments parser
 parser = argparse.ArgumentParser(
