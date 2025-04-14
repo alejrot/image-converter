@@ -2,12 +2,11 @@
 """
 
 import argparse
-from copy import deepcopy
-
 
 from code.consts import ConfigKeys
 # from code.settings import reading_json, find_json, write_default_settings
-from code.settings import default_data
+# from code.settings import default_data
+from code.settings import read_default_settings
 
 
 PROGRAM_NAME = "image-converter"
@@ -18,8 +17,9 @@ PROGRAM_NAME = "image-converter"
 # # read config file
 # user_dict = reading_json(find_json())
 
-# copy of default program parameters
-user_dict = deepcopy(default_data)
+# read config file
+# (if it doesn't exist then default data is returned)
+user_dict = read_default_settings()
 
 # new arguments parser
 parser = argparse.ArgumentParser(
@@ -71,6 +71,7 @@ input_options.add_argument(
     '-r',
     '--recursive',
     action='store_true',
+    default=user_dict[ConfigKeys.RECURSIVE.value],
     help="Enables the recursive search in source folder."
     )
 
@@ -115,6 +116,7 @@ output_options.add_argument(
     '-k',
     '--keep-tree',
     action='store_true',
+    default=user_dict[ConfigKeys.KEEP_TREE.value],
     help="Replies the folder's source image organization at output. Only works with recursive searching."
     )
 

@@ -5,6 +5,7 @@
 import json
 import sys
 from pathlib import Path
+from copy import deepcopy
 
 # project code
 from code.consts import Settings, ConfigKeys, DefaultValue
@@ -98,4 +99,27 @@ def write_default_settings()->bool:
 
 
 
+def read_default_settings()->dict:
+    """Reads the default values from config file. If it doesn't exist then default data is returned.
+    """
+    # JSON path
+    settings_path = find_json()
+    # if config file doesn't exists it returns a copy of default data
+    data = reading_json(settings_path)
+    
+    if data is None:
+        print("No settings file found.")
+        return deepcopy(default_data)
+    else:
+        print("Settings file read.")
+
+        # missing data added with default values
+        default_keys = default_data.keys()
+        data_keys = data.keys()
+        full_data = deepcopy(data)
+        for key in default_keys:
+            if key not in data_keys: 
+                full_data[key] = default_data[key]
+
+        return full_data
 
