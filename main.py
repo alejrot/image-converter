@@ -9,8 +9,6 @@ from code import parser
 from code import process_task
 from code import ext_search
 from code import processed_bar
-from code import write_default_settings
-
 
 # packages
 import psutil
@@ -143,14 +141,12 @@ def main(dict_args: dict)->bool:
     return True
 
 
-parser.version = '1.3.0'
-
-# write_default_settings()
+parser.version = '1.3.1'
 
 # arguments reading
 input_args = parser.parse_args()
 
-# arguments convertion
+# arguments convertion to dictionary
 dict_args = vars(input_args)
 
 # required in Windows and Pyinstaller

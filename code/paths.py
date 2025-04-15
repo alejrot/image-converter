@@ -41,7 +41,7 @@ def relocate_path(src_path, dst_dir, dst_ext, src_parent_folder:str|None=None)->
 
     # creating destiny path
     src_path = Path(src_path)
-    if src_parent_folder == None:
+    if src_parent_folder is None:
         # all the filenames will be together
         dst_name = src_path.name
         dst_path = Path(dst_dir).joinpath(dst_name)
