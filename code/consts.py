@@ -42,7 +42,7 @@ class ConfigKeys(Enum):
 class Settings(Enum):
     """Settings file and path"""
     FILENAME = "setup.json"
-    FOLDER_WINDOWS = "~/.image-converter"
+    FOLDER_WINDOWS = "~/AppData/Local/image-converter"
     FOLDER_LINUX   = "~/.config/image-converter"
     FOLDER_OTHER   = "~/.image-converter"
 
