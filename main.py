@@ -1,17 +1,14 @@
 # standard libraries
 from time import time
 from pathlib import Path
-from multiprocessing import Process
-from multiprocessing import freeze_support
+# from multiprocessing import freeze_support
 
 # local module
 from code import parser
 from code import process_task
 from code import ext_search
-from code import processed_bar
 
 # packages
-import psutil
 from rich import print
 from rich.progress import Progress
 
@@ -115,27 +112,9 @@ def main(dict_args: dict)->bool:
 
     print(f"[blue]Output image extention: [yellow]{dst_ext}")
 
-    # shows progress bar - parallel proccess
-    bar_procc = Process(target=processed_bar, args=(nro_images,))
-    bar_procc.daemon = True
-    bar_procc.start()
-
-    # image delivery in multiple proccess, each one with multiple threads
-    proccess_lists = []
-    cores = psutil.cpu_count(logical=False)
-
-    for c in range(cores):
-        paths = src_paths[ c : nro_images: cores]
-        args = (paths, dst_dir, dst_ext, src_folder, quality)
-        procc = Process(target=process_task, args=args)
-        procc.daemon = True
-        procc.start()
-        proccess_lists.append(procc)
-
-
-    # await until all proccess finishes
-    for procc in proccess_lists:
-        procc.join()
+    # image delivery in multiple threads
+    # it also shows progress bar
+    process_task(src_paths, dst_dir, dst_ext, src_folder, quality)
 
 
     return True
@@ -152,7 +131,7 @@ dict_args = vars(input_args)
 # required in Windows and Pyinstaller
 if __name__ == "__main__":
 
-    freeze_support()
+    # freeze_support()
 
     start = time()
     images_found = main(dict_args=dict_args)

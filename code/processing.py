@@ -1,5 +1,8 @@
+"""This module is the responsible of converting images in different threads."""
+
 from threading import Thread
 from multiprocessing import Value, Event, Lock
+from os import process_cpu_count
 
 # project code
 from code.paths import relocate_path
@@ -8,8 +11,6 @@ from code.paths import relocate_path
 from PIL import Image
 from rich.progress import Progress
 from rich import print
-import psutil
-
 
 
 # sync and global elements
@@ -49,7 +50,7 @@ def convert_image(src_path, dst_path, quality:int=95):
         with Image.open(src_path) as im:
             im.save(dst_path, quality=quality)
 
-    except:
+    except Exception:
         # RGBA saving throws exception 
         with Image.open(src_path) as im:    
             # RGBA images are converted deleting transparency channel
@@ -62,9 +63,8 @@ def convert_image(src_path, dst_path, quality:int=95):
                 # print(f"Image: {src_path} - transparency channel discarded")
             else:
                 print(f"Image: {src_path} - unsupported image")
-    
+
     finally:
-        global processed_counter, processed_event
         # Orders the progress bar counter and update it
         processed_counter.value += 1
         processed_event.set()
@@ -76,6 +76,13 @@ def process_task(src_paths, dst_dir, dst_ext, src_parent_folder:str|None=None, q
     """
 
     threads_list = []
+
+    bar_thread = Thread(
+        target=processed_bar,
+        args  =(len(src_paths),),
+        )
+
+    bar_thread.start()
 
     for src_path in src_paths:
 
@@ -100,10 +107,12 @@ def process_task(src_paths, dst_dir, dst_ext, src_parent_folder:str|None=None, q
         conv_thread.start()
         threads_list.append(conv_thread)
 
-        # limit maximum parallell threads per proccess
-        h = psutil.cpu_count(logical=True)/psutil.cpu_count(logical=False)
+        # limit maximum parallell threads
+        n_threads = process_cpu_count()
+        if n_threads is None:
+            n_threads = 1
 
-        if len(threads_list) > h:
+        if len(threads_list) > n_threads:
             # awaits until first thread end and discards it
             thread = threads_list[0]
             thread.join()
