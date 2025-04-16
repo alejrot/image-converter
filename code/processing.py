@@ -9,7 +9,6 @@ from code.paths import relocate_path
 
 # packages
 from PIL import Image
-from rich.progress import Progress
 from rich import print
 
 
@@ -18,24 +17,6 @@ folder_lock = Lock()
 
 processed_counter = Value('i', 0)
 processed_event   = Event()
-
-
-
-def processed_bar(total_count:int):
-    """Shows a progress bar showing how many images were processed."""
-    # global processed_counter
-    with Progress() as progress:
-
-        task = progress.add_task("[green]Processing...", total=total_count)
-
-        while not progress.finished:
-            # bar remains blocked until a new image is converted
-            processed_event.wait()
-            # updates progress bar
-            i = processed_counter.value
-            progress.update(task, completed=i)
-            # locks the progress again
-            processed_event.clear()
 
 
 
@@ -56,13 +37,13 @@ def convert_image(src_path, dst_path, quality:int=95):
             # RGBA images are converted deleting transparency channel
             source = im.split()
             if len(source) == 4:
-                r,g,b,a = source
                 # A channel discarded
-                im = Image.merge("RGB", (r,g,b))
+                r, g, b, _ = source
+                im = Image.merge("RGB", (r, g, b))
                 im.save(dst_path, quality=quality)
                 # print(f"Image: {src_path} - transparency channel discarded")
             else:
-                print(f"Image: {src_path} - unsupported image")
+                print(f"[bold red]Image: [bold yellow]{src_path} [red]- unsupported image")
 
     finally:
         # Orders the progress bar counter and update it
@@ -71,18 +52,12 @@ def convert_image(src_path, dst_path, quality:int=95):
 
 
 
-def process_task(src_paths, dst_dir, dst_ext, src_parent_folder:str|None=None, quality:int=95):
+def image_threads(src_paths, dst_dir, dst_ext, src_parent_folder:str|None=None, quality:int=95):
     """This task creates a thread for each image to convert and awaits until finish. 
     """
 
     threads_list = []
 
-    bar_thread = Thread(
-        target=processed_bar,
-        args  =(len(src_paths),),
-        )
-
-    bar_thread.start()
 
     for src_path in src_paths:
 

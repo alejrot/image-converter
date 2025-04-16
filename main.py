@@ -1,16 +1,35 @@
 # standard libraries
 from time import time
 from pathlib import Path
+from threading import Thread
 # from multiprocessing import freeze_support
 
 # local module
 from code import parser
-from code import process_task
+from code import image_threads
 from code import ext_search
+from code import processed_counter, processed_event
 
 # packages
 from rich import print
 from rich.progress import Progress
+
+
+def processed_bar(total_count:int):
+    """Shows a progress bar showing how many images were processed."""
+    # global processed_counter
+    with Progress() as progress:
+
+        task = progress.add_task("[green]Processing...", total=total_count)
+
+        while not progress.finished:
+            # bar remains blocked until a new image is converted
+            processed_event.wait()
+            # updates progress bar
+            i = processed_counter.value
+            progress.update(task, completed=i)
+            # locks the progress again
+            processed_event.clear()
 
 
 def main(dict_args: dict)->bool:
@@ -112,9 +131,18 @@ def main(dict_args: dict)->bool:
 
     print(f"[blue]Output image extention: [yellow]{dst_ext}")
 
+
+    bar_thread = Thread(
+        target=processed_bar,
+        args  =(len(src_paths),),
+        )
+
+    bar_thread.start()
+
+
     # image delivery in multiple threads
     # it also shows progress bar
-    process_task(src_paths, dst_dir, dst_ext, src_folder, quality)
+    image_threads(src_paths, dst_dir, dst_ext, src_folder, quality)
 
 
     return True
