@@ -2,13 +2,13 @@
 from time import time
 from pathlib import Path
 from threading import Thread
-# from multiprocessing import freeze_support
 
 # local module
 from code import parser
 from code import image_threads
 from code import ext_search
 from code import processed_counter, processed_event
+from code import lang
 
 # packages
 from rich import print
@@ -20,7 +20,7 @@ def processed_bar(total_count:int):
     # global processed_counter
     with Progress() as progress:
 
-        task = progress.add_task("[green]Processing...", total=total_count)
+        task = progress.add_task(f"[green]{lang.t('shell.main.search.start')}", total=total_count)
 
         while not progress.finished:
             # bar remains blocked until a new image is converted
@@ -63,24 +63,28 @@ def main(dict_args: dict)->bool:
     dst_dir = Path(dst_dir).expanduser()
     dst_dir = str(dst_dir)
 
-    print("[green]Input options:")
+    print(f"[green]{lang.t('shell.main.input_options')}")
 
     if src_list is None or len(src_list) == 0:
 
         if recursive:
-            print("[yellow]Recursive search enabled")
+            print(f"[yellow]{lang.t('shell.main.recursive.enabled')}")
         else:
-            print("[yellow]Single search")
+            print(f"[yellow]{lang.t('shell.main.recursive.disabled')}")
 
-        print(f"[blue]Sorce folder: [yellow]{src_dir}")
-        print(f"[blue]Image extention: [yellow]{src_ext}")
+        print(f"[blue]{lang.t('shell.main.search.folder')} [yellow]{src_dir}")
+        print(f"[blue]{lang.t('shell.main.search.ext')} [yellow]{src_ext}")
 
         src_paths = []
         nro_images = 0
 
         with Progress() as progress:
 
-            task_bar = progress.add_task("[green]Searching...", total=100, start=False)
+            task_bar = progress.add_task(
+                f"[green]{lang.t('shell.main.search.start')}",
+                total=100,
+                start=False
+                )
 
             # search for images to convert
             src_paths = ext_search(src_dir, src_ext, recursive)
@@ -91,16 +95,16 @@ def main(dict_args: dict)->bool:
             nro_images = len(src_paths)
 
 
-        print(f"[blue]Images found: [yellow]{nro_images}")
+        print(f"[blue]{lang.t('shell.main.search.end')} [yellow]{nro_images}")
         if nro_images == 0:
             return False
 
-        print("[green]Output options:")
+        print(f"[green]{lang.t('shell.main.output.section')}")
         if keep_tree:
-            print("[yellow]Keeping folder's organization in output.")
+            print(f"[yellow]{lang.t('shell.main.keep_tree.enabled')}")
             src_folder = Path(src_dir)
         else:
-            print("[yellow]All output images in the output directory.")
+            print(f"[yellow]{lang.t('shell.main.keep_tree.disabled')}")
             src_folder = None
 
     else:
@@ -108,28 +112,27 @@ def main(dict_args: dict)->bool:
         src_paths = src_list
         nro_images = len(src_paths)
 
-        print("[yellow]Converting images from input:")
-        print(f"[blue]Images provided: [yellow]{nro_images}")
+        print(f"[yellow]{lang.t('shell.main.images.intro')}")
+        print(f"[blue]{lang.t('shell.main.images.input')} [yellow]{nro_images}")
         if nro_images == 0:
             return False
 
-        print("[green]Output options:")
-
-        print("[blue]All output images in the output directory.")
+        print(f"[green]{lang.t('shell.main.output.section')}")
+        
+        print(f"[blue]{lang.t('shell.main.keep_tree.disabled')}")
         src_folder = None
-
 
     # create destiny folder if it doesn't exists
     if Path(dst_dir).is_dir():
-        print(f"[blue]Destination folder already exists: [yellow]{dst_dir}")
+        print(f"[blue]{lang.t('shell.main.output.folder.exists')} [yellow]{dst_dir}")
 
     else:
-        print(f"[blue]Creatign destination folder in [yellow]{dst_dir}")
+        print(f"[blue]{lang.t('shell.main.output.folder.create')} [yellow]{dst_dir}")
         Path(dst_dir).mkdir(
             parents=True
             )
 
-    print(f"[blue]Output image extention: [yellow]{dst_ext}")
+    print(f"[blue]{lang.t('shell.main.output.ext')} [yellow]{dst_ext}")
 
 
     bar_thread = Thread(
@@ -148,7 +151,7 @@ def main(dict_args: dict)->bool:
     return True
 
 
-parser.version = '1.3.1'
+parser.version = '1.4.0'
 
 # arguments reading
 input_args = parser.parse_args()
@@ -166,7 +169,10 @@ if __name__ == "__main__":
     end = time()
 
     if images_found is True:
-        print(f"Elapsed time: {(end-start)*1000 :7.6} mseg")
+        # print(f"Elapsed time: {(end-start)*1000 :7.6} mseg")
+        time_seg = f"{(end-start):5.3}"
+        print(f"{lang.t('shell.main.results.time', segs=time_seg)}")
 
     else:
-        print("No images found - Cancelled")
+        print(f"{lang.t('shell.main.results.cancelled')}")
+

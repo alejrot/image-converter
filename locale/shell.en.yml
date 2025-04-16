@@ -1,4 +1,7 @@
+# English
 en:
+
+  # arguments help - args routine
   args:
 
     usage: '%{PROGRAM_NAME} [options]'
@@ -24,7 +27,36 @@ en:
         keep_tree: "Replies the folder's source image organization at output. Only works with recursive searching."
         quality: 'Quality percent. Higher quality means less losses but hight file size.'
 
+  # shell reports - main routine
+  main:
 
+    input_options: 'Input options:'
 
+    recursive: 
+      enabled:  'Recursive search enabled'
+      disabled: 'Single search enabled'
 
+    search:
+      start:  'Searching...'
+      end:    'Images found:'
+      folder: 'Source folder:'
+      ext:    'Image extention:'
 
+    images:
+      intro: 'Converting images from input:'
+      input: 'Images provided:'
+
+    output:
+      section: 'Output options:'
+      folder:
+        create: 'Creatign destination folder in:'
+        exists: 'Destination folder already exists:'
+      ext: 'Output image extention:'
+
+    keep_tree:
+      enabled: "Keeping folder's organization in output."
+      disabled: "All output images in the output directory."
+
+    results:
+      time:       "Elapsed time: %{segs} seconds"
+      cancelled: "No images found - Cancelled"

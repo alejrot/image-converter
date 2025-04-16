@@ -4,7 +4,7 @@ from code.consts import DefaultValue
 from code.paths import ext_search, relocate_path
 from code.settings import reading_json, writing_json, find_json
 from code.settings import write_default_settings, read_default_settings
-
+from code.lang import lang
 
 __all__ = [
     "parser",
@@ -19,4 +19,5 @@ __all__ = [
     "find_json",
     "write_default_settings",
     "read_default_settings",
+    "lang",
 ]
