@@ -9,23 +9,23 @@ en:
 
     input_options:
       title: "Input options"
-      description: "Chooses image's source between a folder's path and an image path's list."
+      description: "Chooses image's source between a folder's path and an archive path's list."
 
       help:
         folder: "Source folder's path. Images will be searched there."
-        ext: "Image's extention to be searched and converted. Values: '.bmp', '.webp', ect."
+        ext: "Image's extention to be searched and converted. Values: '.bmp', '.webp', etc."
         recursive: "Enables the recursive search in source folder."
         images: "Source image's list. Ignores all other input options."
 
     output_options:
       title: "Output options"
-      description: "Changes output properties: output folder, extention, folder tree and quality."
+      description: "Changes output properties: output folder, extention, folder tree and image quality."
 
       help:
         folder: "Destination folder's path."
-        ext: "Desired image's extention. Values: '.jpg', '.png', ect."
+        ext: "Desired image's extention. Values: '.jpg', '.png', etc."
         keep_tree: "Replies the folder's source image organization at output. Only works with recursive searching."
-        quality: 'Quality percent. Higher quality means less losses but hight file size.'
+        quality: 'Quality percent. Higher quality means less losses but higher file size.'
 
   # shell reports - main routine
   main:
@@ -49,7 +49,7 @@ en:
     output:
       section: 'Output options:'
       folder:
-        create: 'Creatign destination folder in:'
+        create: 'Creating destination folder:'
         exists: 'Destination folder already exists:'
       ext: 'Output image extention:'
 

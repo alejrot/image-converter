@@ -40,7 +40,7 @@ def main(dict_args: dict)->bool:
     # quality as percent
     quality = dict_args['quality']
 
-    # original images organization 
+    # original images organization
     keep_tree = dict_args['keep_tree']
 
     # recursive search
