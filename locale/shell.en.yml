@@ -1,0 +1,30 @@
+en:
+  args:
+
+    usage: '%{PROGRAM_NAME} [options]'
+    description: 'Converts the input images to the chosen extention.'
+
+    input_options:
+      title: "Input options"
+      description: "Chooses image's source between a folder's path and an image path's list."
+
+      help:
+        folder: "Source folder's path. Images will be searched there."
+        ext: "Image's extention to be searched and converted. Values: '.bmp', '.webp', ect."
+        recursive: "Enables the recursive search in source folder."
+        images: "Source image's list. Ignores all other input options."
+
+    output_options:
+      title: "Output options"
+      description: "Changes output properties: output folder, extention, folder tree and quality."
+
+      help:
+        folder: "Destination folder's path."
+        ext: "Desired image's extention. Values: '.jpg', '.png', ect."
+        keep_tree: "Replies the folder's source image organization at output. Only works with recursive searching."
+        quality: 'Quality percent. Higher quality means less losses but hight file size.'
+
+
+
+
+

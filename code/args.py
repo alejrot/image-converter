@@ -4,18 +4,18 @@
 import argparse
 
 from code.consts import ConfigKeys
-# from code.settings import reading_json, find_json, write_default_settings
-# from code.settings import default_data
 from code.settings import read_default_settings
+
+import i18n
+
+i18n.load_path.append('locale/')
+
+i18n.set('fallback', 'en')
+i18n.set('locale', 'en')
 
 
 PROGRAM_NAME = "image-converter"
 
-
-# create default config files if it doesnt exist
-# write_default_settings()
-# # read config file
-# user_dict = reading_json(find_json())
 
 # read config file
 # (if it doesn't exist then default data is returned)
@@ -25,8 +25,8 @@ user_dict = read_default_settings()
 parser = argparse.ArgumentParser(
     prog=PROGRAM_NAME,
     # usage='%(prog)s [options]',
-    usage=f'{PROGRAM_NAME} [options]',
-    description='Converts the input images to the chosen extention.',
+    usage=i18n.t('shell.args.usage',PROGRAM_NAME='%(prog)s'),
+    description=i18n.t('shell.args.description')
     # epilog='Text at the bottom of help',
     )
 
@@ -41,9 +41,8 @@ parser.add_argument(
     )
 
 input_options = parser.add_argument_group()
-input_options.title = "Input options"
-input_options.description = "Chooses image's source between a folder's path and an image path's list."
-
+input_options.title = i18n.t('shell.args.input_options.title')
+input_options.description = i18n.t('shell.args.input_options.description')
 
 # source folder
 input_options.add_argument(
@@ -52,7 +51,7 @@ input_options.add_argument(
     type=str,
     default = user_dict[ConfigKeys.SRC_FOLDER.value],
     required=False,
-    help="Source folder's path. Images will be searched there."
+    help=i18n.t('shell.args.input_options.help.folder')
     )
 
 # source image extention
@@ -63,7 +62,7 @@ input_options.add_argument(
     default=user_dict[ConfigKeys.SRC_EXT.value],
     # choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
     required=False,
-    help="Image's extention to be searched and converted. Values: '.bmp', '.webp', ect."
+    help=i18n.t('shell.args.input_options.help.ext')
     )
 
 # recursive search
@@ -72,7 +71,7 @@ input_options.add_argument(
     '--recursive',
     action='store_true',
     default=user_dict[ConfigKeys.RECURSIVE.value],
-    help="Enables the recursive search in source folder."
+    help=i18n.t('shell.args.input_options.help.recursive')
     )
 
 # source images
@@ -82,13 +81,12 @@ input_options.add_argument(
     type=str,
     nargs="+",
     required=False,
-    help="Source image's list. Ignores all other input options."
+    help=i18n.t('shell.args.input_options.help.images')
     )
 
 output_options = parser.add_argument_group()
-output_options.title = "Output options"
-output_options.description = "Changes output properties: output folder, extention, folder tree and quality."
-
+output_options.title = i18n.t('shell.args.output_options.title')
+output_options.description = i18n.t('shell.args.output_options.description')
 
 # destiny folder
 output_options.add_argument(
@@ -97,7 +95,7 @@ output_options.add_argument(
     type=str,
     default=user_dict[ConfigKeys.DST_FOLDER.value],
     required=False,
-    help="Destiny folder's path."
+    help=i18n.t('shell.args.output_options.help.folder')
     )
 
 # destiny image extention
@@ -107,9 +105,8 @@ output_options.add_argument(
     type=str,
     default=user_dict[ConfigKeys.DST_EXT.value],
     required=False,
-    help="Desired image's extention. Values: '.jpg', '.png', ect."
+    help=i18n.t('shell.args.output_options.help.ext')
     )
-
 
 # keep image organization
 output_options.add_argument(
@@ -117,9 +114,8 @@ output_options.add_argument(
     '--keep-tree',
     action='store_true',
     default=user_dict[ConfigKeys.KEEP_TREE.value],
-    help="Replies the folder's source image organization at output. Only works with recursive searching."
+    help=i18n.t('shell.args.output_options.help.keep_tree')
     )
-
 
 # quality
 output_options.add_argument(
@@ -128,7 +124,7 @@ output_options.add_argument(
     type=int,
     default=user_dict[ConfigKeys.QUALITY.value],
     required=False,
-    help='Quality percent. Higher quality means less losses but hight file size.'
+    help=i18n.t('shell.args.output_options.help.quality')
     )
 
 
