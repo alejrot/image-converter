@@ -1,4 +1,5 @@
-#! /bin/bash
+#  Remove default installation folder
+echo "Uninstalling program"
 
 system=`uname`
 system=${system,,}  # conversion to lowercase
@@ -6,17 +7,14 @@ if [ $system = "linux" ]
 then
     echo "Platform: GNU/Linux"
     program_folder=/opt/image-converter/
-    cd $program_folder
-    source .venv/bin/activate
+    rm -r $program_folder
 else
     echo "Platform: Windows"
     program_folder="c:/Program Files/image-converter"
-    cd $program_folder
-    source .venv/Scripts/activate
+    rm -r $program_folder
+
 fi
 
 
-args=("$@")
-python main.py ${args[*]}  
 
-deactivate
+echo "Done!"
