@@ -5,11 +5,11 @@ from multiprocessing import Value, Event, Lock
 from os import process_cpu_count
 
 # project code
-from code.paths import relocate_path
+from .paths import relocate_path
 
 # packages
 from PIL import Image
-from rich import print
+from rich import print as print
 
 
 # sync and global elements

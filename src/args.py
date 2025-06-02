@@ -3,10 +3,10 @@
 
 import argparse
 
-from code.consts import ConfigKeys
-from code.settings import read_default_settings
+from .consts import ConfigKeys
+from .settings import read_default_settings
 
-from code.lang import lang
+from .lang import lang
 
 
 PROGRAM_NAME = "image-converter"

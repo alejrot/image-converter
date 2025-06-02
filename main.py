@@ -4,11 +4,11 @@ from pathlib import Path
 from threading import Thread
 
 # local module
-from code import parser
-from code import image_threads
-from code import ext_search
-from code import processed_counter, processed_event
-from code import lang
+from src import parser
+from src import image_threads
+from src import ext_search
+from src import processed_counter, processed_event
+from src import lang
 
 # packages
 from rich import print

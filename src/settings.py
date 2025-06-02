@@ -8,11 +8,10 @@ from pathlib import Path
 from copy import deepcopy
 
 # project code
-from code.consts import Settings, ConfigKeys, DefaultValue
+from .consts import Settings, ConfigKeys, DefaultValue
 
 # packages
-from rich import print
-
+from rich import print as print
 
 
 default_data = {

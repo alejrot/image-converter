@@ -2,7 +2,7 @@
 
 import locale
 
-from code.consts import DefaultValue
+from .consts import DefaultValue
 
 import i18n as lang
 
