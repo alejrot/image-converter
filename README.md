@@ -36,7 +36,7 @@ Windows
 ```bash
 python -m venv .venv
 source .venv/Scripts/activate
-pip install -r requirements.txt
+pip install -r pip-requirements.txt
 ```
 
 </details>
@@ -49,7 +49,7 @@ Linux
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r pip-requirements.txt
 ```
 </details>
 
