@@ -2,6 +2,7 @@
 from time import time
 from pathlib import Path
 from threading import Thread
+from argparse import ArgumentParser
 
 # local module
 from src import parser
@@ -11,7 +12,7 @@ from src import processed_counter, processed_event
 from src import lang
 
 # packages
-from rich import print
+from rich import print as print
 from rich.progress import Progress
 
 
@@ -32,33 +33,36 @@ def processed_bar(total_count:int):
             processed_event.clear()
 
 
-def main(dict_args: dict)->bool:
+def main(args: ArgumentParser)->bool:
+# def main(dict_args: dict)->bool:
     """Image search, delivery and parallel processing in the same function.
     Returns 'True' if images were found, counter case returns 'False'"""
 
-
     # quality as percent
-    quality = dict_args['quality']
+    quality = args.quality
 
     # original images organization
-    keep_tree = dict_args['keep_tree']
+    keep_tree = args.keep_tree
 
     # recursive search
-    recursive = dict_args['recursive']
+    recursive = args.recursive
+
+    # overwrite old files
+    overwrite = args.overwrite
 
     # source folder and extention
-    src_dir: str = dict_args['src_folder']
-    src_ext: str = dict_args['src_ext']
+    src_dir: str = args.src_folder
+    src_ext: str = args.src_ext
 
     src_dir = Path(src_dir).expanduser()
     src_dir = str(src_dir)
 
     # image list
-    src_list: list[str] = dict_args['src_images']
+    src_list: list[str] = args.src_images
 
     # destiny folder and extention
-    dst_dir: str = dict_args['dst_folder']
-    dst_ext: str = dict_args['dst_ext']
+    dst_dir: str = args.dst_folder
+    dst_ext: str = args.dst_ext
 
     dst_dir = Path(dst_dir).expanduser()
     dst_dir = str(dst_dir)
@@ -151,21 +155,20 @@ def main(dict_args: dict)->bool:
     return True
 
 
-parser.version = '1.4.0'
 
-# arguments reading
-input_args = parser.parse_args()
-
-# arguments convertion to dictionary
-dict_args = vars(input_args)
-
-# required in Windows and Pyinstaller
 if __name__ == "__main__":
 
+    # required in Windows and Pyinstaller
     # freeze_support()
+    
+    parser.version = '1.4.0'
+
+    # arguments reading
+    input_args = parser.parse_args()
+
 
     start = time()
-    images_found = main(dict_args=dict_args)
+    images_found = main(input_args)
     end = time()
 
     if images_found is True:

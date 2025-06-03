@@ -5,6 +5,7 @@ from .paths import ext_search, relocate_path
 from .settings import reading_json, writing_json, find_json
 from .settings import write_default_settings, read_default_settings
 from .lang import lang
+from .consts import ConfigKeys
 
 __all__ = [
     "parser",
@@ -20,4 +21,5 @@ __all__ = [
     "write_default_settings",
     "read_default_settings",
     "lang",
+    "ConfigKeys",
 ]
