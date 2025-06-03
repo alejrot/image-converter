@@ -58,6 +58,12 @@ es:
       enabled: "Manteniendo la organización de carpetas en la salida."
       disabled: "Todas las imágenes de salida en la carpeta de salida."
 
+    overwrite:
+      enabled: "Sobreescritura de salida habilitada"
+      disabled: "Sobreescritura de salida no permitida"
+      repeated: "Imágenes encontradas a la salida:"
+      pending:  "Imágenes a convertir:"
+
     results:
       time:      "Tiempo transcurrido: %{segs} segundos"
-      cancelled: "No se encontraron imagenes - Cancelado"
+      cancelled: "No se encontraron imágenes sin convertir - Cancelado"

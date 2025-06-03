@@ -34,7 +34,7 @@ def ext_search(directory:str, extention:str, recursive:bool=False )->list:
 
 
 
-def relocate_path(src_path, dst_dir, dst_ext, src_parent_folder:str|None=None)->str:
+def relocate_path(src_path, dst_dir, dst_ext, src_parent_folder:str|None=None)->Path:
     """Adapt the input path to the output directory and the chosen extention.
     If the parent folder is 'None' only the filename will be adapted to output directory.
     """

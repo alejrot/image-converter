@@ -52,7 +52,6 @@ def writing_json(settings_path, dict_data)->bool:
     return Path(settings_path).is_file()
 
 
-
 def find_json()->str:
     """Returns the data path to the JSON settings file."""
 
@@ -80,23 +79,22 @@ def find_json()->str:
 
 def write_default_settings()->bool:
     """Saves the default values in config file."""
-    
+
     # JSON path
     settings_path = find_json()
-    # if config folder doesn't exists it will be created 
+    # if config folder doesn't exists it will be created
     parent_folder = settings_path.parent
     if not parent_folder.is_dir():
         Path.mkdir(parent_folder, parents=True, exist_ok=True)
         print("Settings folder created")
 
-    # if config file doesn't exists it will be created 
+    # if config file doesn't exists it will be created
     if writing_json(settings_path, default_data):
         print("Settings file created/overwrote")
         return True
     else:
         print("Cannot create settings file")
-        return False 
-
+        return False
 
 
 def read_default_settings()->dict:
@@ -106,7 +104,7 @@ def read_default_settings()->dict:
     settings_path = find_json()
     # if config file doesn't exists it returns a copy of default data
     data = reading_json(settings_path)
-    
+
     if data is None:
         print("No settings file found.")
         return deepcopy(default_data)
@@ -118,8 +116,7 @@ def read_default_settings()->dict:
         data_keys = data.keys()
         full_data = deepcopy(data)
         for key in default_keys:
-            if key not in data_keys: 
+            if key not in data_keys:
                 full_data[key] = default_data[key]
 
         return full_data
-

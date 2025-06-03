@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from src import parser
 from src import image_threads
 from src import ext_search
+from src import relocate_path
 from src import processed_counter, processed_event
 from src import lang
 
@@ -92,12 +93,9 @@ def main(args: ArgumentParser)->bool:
 
             # search for images to convert
             src_paths = ext_search(src_dir, src_ext, recursive)
-
             progress.update(task_bar, completed=100)
-
             src_paths = list(src_paths)
             nro_images = len(src_paths)
-
 
         print(f"[blue]{lang.t('shell.main.search.end')} [yellow]{nro_images}")
         if nro_images == 0:
@@ -122,9 +120,44 @@ def main(args: ArgumentParser)->bool:
             return False
 
         print(f"[green]{lang.t('shell.main.output.section')}")
-        
+
         print(f"[blue]{lang.t('shell.main.keep_tree.disabled')}")
         src_folder = None
+
+
+    print(f"[blue]{lang.t('shell.main.output.ext')} [yellow]{dst_ext}")
+
+    if not overwrite:
+
+        # discarding paths of images already converted or preexistent in output
+        print(f"[yellow]{lang.t('shell.main.overwrite.disabled')}")
+
+        discarded_counter = 0
+        unconverted_images = []
+
+        for src_image in src_paths:
+
+            output_image = relocate_path(src_image, dst_dir, dst_ext, src_folder)
+
+            if output_image.exists():
+                discarded_counter += 1
+
+            else:
+                unconverted_images.append(src_image)
+
+        print(f"[blue]{lang.t('shell.main.overwrite.repeated')} [yellow]{discarded_counter}")
+
+        src_paths = unconverted_images
+        nro_images = len(src_paths)
+
+        print(f"[blue]{lang.t('shell.main.overwrite.pending')} [yellow]{nro_images}")
+
+        if nro_images == 0:
+            return False
+
+    else:
+        # converting all input images
+        print(f"[yellow]{lang.t('shell.main.overwrite.enabled')}")
 
     # create destiny folder if it doesn't exists
     if Path(dst_dir).is_dir():
@@ -136,9 +169,7 @@ def main(args: ArgumentParser)->bool:
             parents=True
             )
 
-    print(f"[blue]{lang.t('shell.main.output.ext')} [yellow]{dst_ext}")
-
-
+    # the progress  bar has its own thread
     bar_thread = Thread(
         target=processed_bar,
         args  =(len(src_paths),),
@@ -146,26 +177,22 @@ def main(args: ArgumentParser)->bool:
 
     bar_thread.start()
 
-
     # image delivery in multiple threads
     # it also shows progress bar
     image_threads(src_paths, dst_dir, dst_ext, src_folder, quality)
 
-
     return True
-
 
 
 if __name__ == "__main__":
 
     # required in Windows and Pyinstaller
     # freeze_support()
-    
+
     parser.version = '1.4.0'
 
     # arguments reading
     input_args = parser.parse_args()
-
 
     start = time()
     images_found = main(input_args)

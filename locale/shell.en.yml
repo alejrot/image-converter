@@ -58,6 +58,12 @@ en:
       enabled: "Keeping folder's organization in output."
       disabled: "All output images in the output directory."
 
+    overwrite:
+      enabled:  "Output overwrite enabled"
+      disabled: "Output overwrite not allowed"
+      repeated: "Images found in input:"
+      pending:  "Images a convert:"
+
     results:
       time:       "Elapsed time: %{segs} seconds"
-      cancelled: "No images found - Cancelled"
+      cancelled: "No unconverted images found - Cancelled"
