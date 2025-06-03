@@ -2,7 +2,8 @@
 
 from threading import Thread
 from multiprocessing import Value, Event, Lock
-from os import process_cpu_count
+# from os import process_cpu_count
+from os import cpu_count
 
 # project code
 from .paths import relocate_path
@@ -83,7 +84,8 @@ def image_threads(src_paths, dst_dir, dst_ext, src_parent_folder:str|None=None, 
         threads_list.append(conv_thread)
 
         # limit maximum parallell threads
-        n_threads = process_cpu_count()
+        # n_threads = process_cpu_count()
+        n_threads = cpu_count()
         if n_threads is None:
             n_threads = 1
 
