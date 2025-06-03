@@ -26,6 +26,7 @@ en:
         ext: "Desired image's extention. Values: '.jpg', '.png', etc."
         keep_tree: "Replies the folder's source image organization at output. Only works with recursive searching."
         quality: 'Quality percent. Higher quality means less losses but higher file size.'
+        overwrite: "Enables file overwriting in output folder."
 
   # shell reports - main routine
   main:

@@ -22,7 +22,8 @@ default_data = {
     f"{ConfigKeys.QUALITY.value}" : DefaultValue.QUALITY.value,
     f"{ConfigKeys.KEEP_TREE.value}" : DefaultValue.KEEP_TREE.value,
     f"{ConfigKeys.RECURSIVE.value}" : DefaultValue.RECURSIVE.value,
-    f"{ConfigKeys.OVERRIDE.value}" : DefaultValue.OVERRIDE.value,
+    f"{ConfigKeys.OVERWRITE.value}" : DefaultValue.OVERWRITE.value,
+    # not implemented yet
     f"{ConfigKeys.THEME.value}" : DefaultValue.THEME.value,
     f"{ConfigKeys.LANGUAGE.value}" : DefaultValue.LANGUAGE.value,
 }

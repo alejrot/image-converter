@@ -18,8 +18,8 @@ class DefaultValue(Enum):
     DST_EXT     = ".jpg"
     KEEP_TREE     = False
     RECURSIVE     = False
+    OVERWRITE     = False
     # not implemented yet
-    OVERRIDE      = False
     THEME         = "light"
     LANGUAGE      = "EN"
 
@@ -33,8 +33,8 @@ class ConfigKeys(Enum):
     QUALITY       = "quality"
     KEEP_TREE     = "keep_tree"
     RECURSIVE     = "recursive"
+    OVERWRITE     = "overwrite"
     # not implemented yet
-    OVERRIDE      = "override"
     THEME         = "theme"
     LANGUAGE      = "language"
 

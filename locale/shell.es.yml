@@ -26,6 +26,7 @@ es:
         ext: "Extensión de imagen deseada. Valores: '.jpg', '.png', etc."
         keep_tree: "Replica la organización de las imágenes de entrada a la salida. Sólo funciona con la búsqueda recursiva."
         quality: 'Porcentaje de calidad. Mayor calidad significa menos pérdidas pero mayor peso de archivo.'
+        overwrite: "Habilita la sobreescritura de archivos en la carpeta de salida."
 
   # shell reports - main routine
   main:

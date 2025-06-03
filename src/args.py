@@ -122,6 +122,14 @@ output_options.add_argument(
     help=lang.t('shell.args.output_options.help.quality')
     )
 
+# overwrite
+output_options.add_argument(
+    '-o',
+    '--overwrite',
+    action='store_true',
+    default=user_dict[ConfigKeys.OVERWRITE.value],
+    help=lang.t('shell.args.output_options.help.overwrite')
+    )
 
 if __name__=="__main__":
 
