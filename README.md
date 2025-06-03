@@ -99,6 +99,7 @@ The available options for output images are:
 |`-df`|`--dst-folder`|destination folder's path|`converted-images` folder inside user directory |
 |`-de`|`--dst-ext`|destination image's extention|`.jpg`|
 |`-k`|`--keep-tree`| keep input folder's tree at output (only for recursive search)| disabled |
+|`-o`|`--overwrite`| Forces conversion if output images already exists | disabled |
 |`-q`|`--quality`| image quality   |`95`| 
 
 Quality option enables output image compression but degrading image. By default is 95 (very slow losses). It can be between 1 and 100.
