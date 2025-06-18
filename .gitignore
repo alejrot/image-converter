@@ -22,6 +22,10 @@ build/
 dist/
 
 
+app_demos/
+app/img_demo/
+
+trash/
 
 
 poetry.lock

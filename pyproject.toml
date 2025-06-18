@@ -21,6 +21,10 @@ packages = [{include = "proy", from = "src"}]
 [tool.poetry.group.test.dependencies]
 ruff = "^0.11.12"
 
+
+[tool.poetry.group.app.dependencies]
+flet = "~0.28"
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
