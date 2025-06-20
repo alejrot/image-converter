@@ -1,6 +1,33 @@
 from pathlib import Path
 
 
+images_ext = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".webp",
+    ".bmp",
+    ".tiff",
+    ]
+
+
+def images_search(directory:str, extentions: list[str]=images_ext, recursive:bool=False ): 
+    """Searchs for image files in the chosen folder.
+    Returns a list of 'pathlib.Path' objects with the file paths found.
+    It searchs extentions with lowercase and upercase together: .webp and .WEBP, .png and .PNG, ect.
+    """
+    images_list = []
+
+    for ext in extentions:
+        # recursive search
+        images_found = ext_search(directory, ext, recursive )
+        images_list.extend(images_found)
+
+    return images_list
+
+
+
+
 def ext_search(directory:str, extention:str, recursive:bool=False )->list:
     """Searchs for files with the specified extention in the chosen folder.
     Returns a list of 'pathlib.Path' objects with the file paths found.
