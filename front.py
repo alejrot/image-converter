@@ -7,36 +7,7 @@ from app.menus import source_images_button, source_folder_button
 from app.image_card import list_view, cards_container
 from app.image_card import create_cards
 
-# from app.paths_mod import images_search
-
-from src import ext_search
-
-
-
-images_ext = [
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".webp",
-    ".tiff",
-    ]
-
-
-def images_search(
-    directory:str,
-    extentions: list[str]=images_ext,
-    recursive:bool=False 
-    ): 
-
-    images_list = []
-
-    for ext in extentions:
-        # recursive search
-        images_found = ext_search(directory, ext, recursive )
-        images_list.extend(images_found)
-
-    return images_list
-
+from src.paths import images_search
 
 
 def choose_files_dialog(e: ft.FilePickerResultEvent):
