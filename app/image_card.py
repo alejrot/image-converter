@@ -14,6 +14,7 @@ class ImageCard(ft.Card):
         else:
             self.display_path = self.source_path
 
+
         self.content = ft.Container(
             content=ft.Row([
                 ft.ListTile(
@@ -49,51 +50,70 @@ class ImageCard(ft.Card):
         self.shadow_color=ft.Colors.ON_SURFACE_VARIANT,
 
 
+def create_cards(image_list: list[str | Path] | None ):
 
-## Demo example
-def main(page: ft.Page):
-    page.title = "Card Example"
-    page.theme_mode = ft.ThemeMode.LIGHT
-    # page.theme_mode = ft.ThemeMode.DARK
-    # page.theme_mode = ft.ThemeMode.SYSTEM
+    cards_list = []
 
-    cards_list = [
-        # demo images - user folder
-        ImageCard("img_demo/img01.webp"),
-        ImageCard("img_demo/img02.webp"),
-        ImageCard("img_demo/img03.webp"),
-        ImageCard("img_demo/img04.webp"),
-        # missing images - system folder
-        ImageCard("/dev/shm/img01.jpg"),
-        ImageCard("/dev/shm/img02.jpg"),
-        ImageCard("/dev/shm/img03.jpg"),
-        ImageCard("/dev/shm/img04.jpg"),
-        ImageCard("/dev/shm/img05.jpg"),
-    ]
+    if image_list is not None and len(image_list) >  0: 
+
+        for image in image_list: 
+            cards_list.append( ImageCard(image) )
+
+    return cards_list
 
 
-    list_view = ft.ListView(
-        spacing=10,
-        padding=20,
-        width=800,
-        auto_scroll=True,
-    )
 
 
-    cards_container = ft.Container(
-        # transparent container - enables scrollbar
-        content=list_view,
-        height=700,
-    )
+# demo - variables
 
-    page.add(cards_container)
+image_list = [
+    # demo images - user folder
+    "img_demo/img01.webp",
+    "img_demo/img02.webp",
+    "img_demo/img03.webp",
+    "img_demo/img04.webp",
+    # missing images - system folder
+    "/dev/shm/img01.jpg",
+    "/dev/shm/img02.jpg",
+    "/dev/shm/img03.jpg",
+    "/dev/shm/img04.jpg",
+    "/dev/shm/img05.jpg",
+]
 
-    list_view.controls = cards_list
 
-    page.update()
+# exportable controls
+list_view = ft.ListView(
+    # graphical column - renders elements selectively
+    spacing=10,
+    padding=20,
+    width=800,
+    auto_scroll=True,
+)
+
+
+cards_container = ft.Container(
+    # transparent container - enables scrollbar
+    content=list_view,
+    height=700,
+)
 
 
 
 if __name__=="__main__":
     
+    ## Demo example
+    def main(page: ft.Page):
+        page.title = "Card Example"
+        page.theme_mode = ft.ThemeMode.LIGHT
+        # page.theme_mode = ft.ThemeMode.DARK
+        # page.theme_mode = ft.ThemeMode.SYSTEM
+
+        page.add(cards_container)
+
+        list_view.controls = create_cards(image_list)
+
+
+        page.update()
+
+
     ft.app(main)

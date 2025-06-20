@@ -1,10 +1,57 @@
 
 import flet as ft
 
-from image_card import ImageCard
+from components.menus import upper_bar
+from components.menus import source_images_button, source_folder_button 
+
+from image_card import list_view, cards_container
+from image_card import create_cards
+
+
+
+
+def choose_files_dialog(e: ft.FilePickerResultEvent):
+
+    if e.files is not None:
+        paths_list = []
+
+        for file in e.files:
+            paths_list.append(file.path)
+
+        list_view.controls = create_cards(paths_list)
+        cards_container.update()
+
+
+def choose_folder_dialog(e: ft.FilePickerResultEvent):
+
+    print(e.path)
+
+
+
+
+files_picker   = ft.FilePicker(on_result=choose_files_dialog)
+folder_picker = ft.FilePicker(on_result=choose_folder_dialog)
+
+
+def choose_files(e):
+    files_picker.pick_files(allow_multiple=True)
+
+def choose_folder(e):
+    folder_picker.get_directory_path()
+
+
+
+source_folder_button.on_click = choose_folder
+source_images_button.on_click = choose_files
+
+
 
 
 def main(page: ft.Page):
+
+    page.add(files_picker)    
+    page.add(folder_picker)    
+
 
 
     def check_item_clicked(e):
@@ -12,83 +59,19 @@ def main(page: ft.Page):
         page.update()
 
 
-    page.appbar = ft.AppBar(
-        leading=ft.Icon(ft.Icons.PALETTE),
-        leading_width=40,
-        title=ft.Text("AppBar Example"),
-        center_title=False,
-        bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
-        actions=[
-            ft.IconButton(ft.Icons.WB_SUNNY_OUTLINED),
-            ft.IconButton(ft.Icons.FILTER_3),
-            ft.PopupMenuButton(
-                items=[
-                    ft.PopupMenuItem(text="Item 1"),
-                    ft.PopupMenuItem(),  # divider
-                    ft.PopupMenuItem(
-                        text="Checked item",checked=False, on_click=check_item_clicked
-                    ),
-                ]
-            ),
-        ],
-    )
-
-
-    page.navigation_bar = ft.NavigationBar(
-        destinations=[
-            ft.NavigationBarDestination(icon=ft.Icons.EXPLORE, label="Explore"),
-            ft.NavigationBarDestination(icon=ft.Icons.COMMUTE, label="Commute"),
-            ft.NavigationBarDestination(
-                icon=ft.Icons.BOOKMARK_BORDER,
-                selected_icon=ft.Icons.BOOKMARK,
-                label="Favorites",
-            ),
-        ]
-    )
-
-
-    cards_list = [
-        # demo images - user folder
-        ImageCard("img_demo/img01.webp"),
-        ImageCard("img_demo/img02.webp"),
-        ImageCard("img_demo/img03.webp"),
-        ImageCard("img_demo/img04.webp"),
-        # missing images - system folder
-        ImageCard("/dev/shm/img01.jpg"),
-        ImageCard("/dev/shm/img02.jpg"),
-        ImageCard("/dev/shm/img03.jpg"),
-        ImageCard("/dev/shm/img04.jpg"),
-        ImageCard("/dev/shm/img05.jpg"),
-    ]
-
-
-
-    list_view = ft.ListView(
-        # graphical column - renders elements selectively
-        spacing=10,
-        padding=20,
-        width=800,
-        auto_scroll=True,
-    )
-
-    cards_container = ft.Container(
-        # transparent container - enables scrollbar
-        content=list_view,
-        height=700,
-        # bgcolor=ft.Colors.GREEN_400
-    )
+    page.appbar = upper_bar
+    
 
 
     page.add(cards_container)
-    list_view.controls = cards_list
     page.update()
 
 
-    page.title = "MAQUETA"
+    page.title = "Image Converter"
 
     page.theme_mode = ft.ThemeMode.SYSTEM
     # page.theme_mode = ft.ThemeMode.DARK
-    # page.theme_mode = ft.ThemeMode.LIGHT
+    page.theme_mode = ft.ThemeMode.LIGHT
 
     page.update()
 
