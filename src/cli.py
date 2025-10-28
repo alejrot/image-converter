@@ -1,20 +1,19 @@
 # standard libraries
-from time import time
 from pathlib import Path
 from threading import Thread
 from argparse import ArgumentParser
 
+# packages
+from rich import print as print
+from rich.progress import Progress
+
 # local module
-from src import parser
 from src import image_threads
 from src import ext_search
 from src import relocate_path
 from src import processed_counter, processed_event
 from src import lang
 
-# packages
-from rich import print as print
-from rich.progress import Progress
 
 
 def processed_bar(total_count:int):
@@ -34,8 +33,7 @@ def processed_bar(total_count:int):
             processed_event.clear()
 
 
-def main(args: ArgumentParser)->bool:
-# def main(dict_args: dict)->bool:
+def cli_process(args: ArgumentParser)->bool:
     """Image search, delivery and parallel processing in the same function.
     Returns 'True' if images were found, counter case returns 'False'"""
 
@@ -179,30 +177,12 @@ def main(args: ArgumentParser)->bool:
 
     # image delivery in multiple threads
     # it also shows progress bar
-    image_threads(src_paths, dst_dir, dst_ext, src_folder, quality)
+    image_threads(
+        src_paths,
+        dst_dir,
+        dst_ext,
+        src_folder,
+        quality
+        )
 
     return True
-
-
-if __name__ == "__main__":
-
-    # required in Windows and Pyinstaller
-    # freeze_support()
-
-    parser.version = '1.4.0'
-
-    # arguments reading
-    input_args = parser.parse_args()
-
-    start = time()
-    images_found = main(input_args)
-    end = time()
-
-    if images_found is True:
-        # print(f"Elapsed time: {(end-start)*1000 :7.6} mseg")
-        time_seg = f"{(end-start):5.3}"
-        print(f"{lang.t('shell.main.results.time', segs=time_seg)}")
-
-    else:
-        print(f"{lang.t('shell.main.results.cancelled')}")
-
