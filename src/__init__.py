@@ -14,7 +14,7 @@ from .consts import ConfigKeys
 from .cli import cli_process
 
 
-__version__ = '1.5.1'
+__version__ = '1.6.0'
 
 
 __all__ = [
