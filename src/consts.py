@@ -14,7 +14,8 @@ class DefaultValue(Enum):
     QUALITY     = 95
     SRC_FOLDER  = "."
     DST_FOLDER  = "~/converted-images/"
-    SRC_EXT     = ".webp"
+    # SRC_EXT     = ".webp"
+    SRC_EXT     = "ALL"
     DST_EXT     = ".jpg"
     KEEP_TREE     = False
     RECURSIVE     = False

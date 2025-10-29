@@ -2,6 +2,7 @@
 from pathlib import Path
 from threading import Thread
 from argparse import ArgumentParser
+from copy import deepcopy
 
 # packages
 from rich import print as print
@@ -13,6 +14,7 @@ from src import ext_search
 from src import relocate_path
 from src import processed_counter, processed_event
 from src import lang
+from src import images_ext
 
 
 
@@ -53,9 +55,8 @@ def cli_process(args: ArgumentParser)->bool:
     src_dir: str = args.src_folder
     src_ext: str = args.src_ext
 
-    src_dir = Path(src_dir).expanduser()
-    src_dir = str(src_dir)
-
+    src_dir = str(Path(src_dir).expanduser())
+    
     # image list
     src_list: list[str] = args.src_images
 
@@ -76,8 +77,11 @@ def cli_process(args: ArgumentParser)->bool:
             print(f"[yellow]{lang.t('shell.main.recursive.disabled')}")
 
         print(f"[blue]{lang.t('shell.main.search.folder')} [yellow]{src_dir}")
+
         print(f"[blue]{lang.t('shell.main.search.ext')} [yellow]{src_ext}")
 
+
+        # search for images to convert
         src_paths = []
         nro_images = 0
 
@@ -89,8 +93,17 @@ def cli_process(args: ArgumentParser)->bool:
                 start=False
                 )
 
-            # search for images to convert
-            src_paths = ext_search(src_dir, src_ext, recursive)
+            if src_ext.upper() == "ALL":
+                exts = deepcopy(images_ext)
+                for ext in exts:
+                    src_paths.extend(
+                        ext_search(src_dir, ext, recursive)
+                    )
+            else:
+                src_paths.extend(
+                    ext_search(src_dir, src_ext, recursive)
+                )
+
             progress.update(task_bar, completed=100)
             src_paths = list(src_paths)
             nro_images = len(src_paths)
@@ -100,6 +113,7 @@ def cli_process(args: ArgumentParser)->bool:
             return False
 
         print(f"[green]{lang.t('shell.main.output.section')}")
+        
         if keep_tree:
             print(f"[yellow]{lang.t('shell.main.keep_tree.enabled')}")
             src_folder = Path(src_dir)

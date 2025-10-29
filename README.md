@@ -100,10 +100,11 @@ The available options for output images are:
 |`-de`|`--dst-ext`|destination image's extention|`.jpg`|
 |`-k`|`--keep-tree`| keep input folder's tree at output (only for recursive search)| disabled |
 |`-o`|`--overwrite`| Forces conversion if output images already exists | disabled |
-|`-q`|`--quality`| image quality   |`95`| 
+|`-q`|`--quality`| image quality (as percent number)  |`95`| 
 
-Quality option enables output image compression but degrading image. By default is 95 (very slow losses). It can be between 1 and 100.
-However not all formats can be compressed (see [Annex](#annex-image-formats)).
+Quality option enables output image compression but degrading image. By default is 95 (very slow losses).
+It can be between 1 and 100;
+however not all formats can be compressed (see [Annex](#appendix-image-formats)).
 
 </details>
 
@@ -179,7 +180,7 @@ python main.py --src-folder examples/ --dst-folder output/  -src-ext .bmp  -dst-
 </details>
 
 
-## Annex: image formats
+## Appendix: image formats
 
 
 ### JPG

@@ -7,6 +7,7 @@ from .consts import ConfigKeys
 from .settings import read_default_settings
 
 from .lang import lang
+from .paths import images_ext
 
 
 PROGRAM_NAME = "image-converter"
@@ -55,7 +56,7 @@ input_options.add_argument(
     '--src-ext',
     type=str,
     default=user_dict[ConfigKeys.SRC_EXT.value],
-    # choices=['.jpg', '.png', '.webp', '.jpeg', '.bmp'],
+    choices=images_ext.append("ALL"), #(all extentions enabled)
     required=False,
     help=lang.t('shell.args.input_options.help.ext')
     )
