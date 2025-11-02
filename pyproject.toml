@@ -6,6 +6,7 @@ authors = [
     {name = "Alejrot"}
 ]
 readme = "README.md"
+license = {text = "MIT"}
 requires-python = ">=3.10"
 dependencies = [
     "pillow (>=11.2.1,<12.0.0)",
@@ -13,20 +14,20 @@ dependencies = [
     "python-i18n[yaml] (>=0.3.9,<0.4.0)"
 ]
 
-[tool.poetry]
-packages = [
-    {include = "src"}
-    ]
-
-
-[tool.poetry.group.test.dependencies]
-ruff = "^0.11.12"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 
+[tool.setuptools.packages.find]
+where = ["."]  
+include = ["src"]
+
+[dependency-groups]
+test = [
+    "ruff>=0.14.3",
+]
 
 [project.scripts]
 img-convert = "src:main"

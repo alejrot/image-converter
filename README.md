@@ -1,6 +1,7 @@
 # Image Converter
 
-This software converts input image to the desired format extention
+This software converts input image
+to the desired format extension
 in the destiny folder chosen by the user.
 It also admits compresssion options.
 
@@ -10,11 +11,11 @@ Written in Python and Pillow.
 
 Some of the implemented features:
 
-- format extention selectable by user;
+- format extension selectable by user;
 - single and recursive folder exploration;
 - cloned subfolder tree and organization in output;
 - compression adjustable by user;
-- 4th image channel (*albedo*) erasing.
+- 4th image channel (*albedo*) erasing (by *default*).
 
 
 ## Requirements
@@ -36,7 +37,7 @@ Windows
 ```bash
 python -m venv .venv
 source .venv/Scripts/activate
-pip install -r pip-requirements.txt
+pip install -r requirements.txt
 ```
 
 </details>
@@ -49,7 +50,7 @@ Linux
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r pip-requirements.txt
+pip install -r requirements.txt
 ```
 </details>
 
@@ -62,22 +63,21 @@ So far it's can only be used with Python interpreter:
 py main.py <arguments> 
 ```
 
-
-
 <details>
 <summary>
 Source options
 </summary>
 
-The easier way to work is searching images by file extention in a specified folder:
+The easier way to work is searching images by file extension in a specified folder:
 
 
 |short | long | explanation | default value|
 |---|----|---|---|
 |`-sf`|`--src-folder`| source folder's path|`.` |
-|`-se`|`--src-ext`| source image's extention|`.webp`|
+|`-se`|`--src-ext`| source image's extension|`ALL`|
 |`-r`|`--recursive`| recursive image search in source folder | disabled |
 
+`ALL` or `all` wildcard enables image searching of any allowed format.
 The alternative way by a list of image paths, in that case the other input options are disabled.
 
 |short | long | explanation | 
@@ -97,7 +97,7 @@ The available options for output images are:
 |short | long | explanation | default value| 
 |---|----|---|---|
 |`-df`|`--dst-folder`|destination folder's path|`converted-images` folder inside user directory |
-|`-de`|`--dst-ext`|destination image's extention|`.jpg`|
+|`-de`|`--dst-ext`|destination image's extension|`.jpg`|
 |`-k`|`--keep-tree`| keep input folder's tree at output (only for recursive search)| disabled |
 |`-o`|`--overwrite`| Forces conversion if output images already exists | disabled |
 |`-q`|`--quality`| image quality (as percent number)  |`95`| 
