@@ -6,9 +6,14 @@ from .consts import DefaultValue
 
 import i18n as lang
 
+import sys
+from pathlib import Path
 
-# translations folder - YAML files
-lang.load_path.append('locale/')
+
+# translations folder in source code folder - YAML files
+environment_path = sys.exec_prefix
+locale_path = Path(environment_path).parent.joinpath('locale')
+lang.load_path.append(locale_path)
 
 # locale language as prefered one
 locale_language = locale.getlocale()

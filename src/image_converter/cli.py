@@ -9,12 +9,9 @@ from rich import print as print
 from rich.progress import Progress
 
 # local module
-from src import image_threads
-from src import ext_search
-from src import relocate_path
-from src import processed_counter, processed_event
-from src import lang
-from src import images_ext
+from .processing import image_threads, processed_counter, processed_event
+from .paths import ext_search, relocate_path, images_ext
+from .lang import lang
 
 
 

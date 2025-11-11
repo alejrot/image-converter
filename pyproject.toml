@@ -7,7 +7,7 @@ authors = [
 ]
 readme = "README.md"
 license = {text = "MIT"}
-requires-python = ">=3.10"
+requires-python = ">=3.10, <3.15"
 dependencies = [
     "pillow (>=11.2.1,<12.0.0)",
     "rich (>=14.0.0,<15.0.0)",
@@ -16,13 +16,9 @@ dependencies = [
 
 
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.9.8,<0.10.0"]
+build-backend = "uv_build"
 
-
-[tool.setuptools.packages.find]
-where = ["."]  
-include = ["src"]
 
 [dependency-groups]
 test = [
@@ -30,4 +26,4 @@ test = [
 ]
 
 [project.scripts]
-img-convert = "src:main"
+image-converter = "image_converter:main"
