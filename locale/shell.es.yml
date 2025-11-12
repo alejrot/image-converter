@@ -1,0 +1,69 @@
+# Spanish
+es:
+
+  # arguments help - args routine
+  args:
+
+    usage: '%{PROGRAM_NAME} [opciones]'
+    description: 'Convierte las imágenes de entrada a la extensión deseada.'
+
+    input_options:
+      title: "Opciones de entrada"
+      description: "Elige la fuente de las imágenes entre la ruta de una carpeta y una lista de rutas a archivo."
+
+      help:
+        folder: "Ruta a la carpeta de origen. Las imágenes serán buscadas allí."
+        ext: "Extensión de imagen a ser buscada y convertida. Valores: '.bmp', '.webp', etc."
+        recursive: "Habilita la búsqueda recursiva en la carpeta de origen."
+        images: "Lista de imágenes fuente. Ignora a todas las otras opciones de entrada."
+
+    output_options:
+      title: "Opciones de salida"
+      description: "Cambia las propiedades de salida: carpeta de destino, extensión, arbol de carpetas y calidad de imagen."
+
+      help:
+        folder: "Ruta a la carpeta de salida."
+        ext: "Extensión de imagen deseada. Valores: '.jpg', '.png', etc."
+        keep_tree: "Replica la organización de las imágenes de entrada a la salida. Sólo funciona con la búsqueda recursiva."
+        quality: 'Porcentaje de calidad. Mayor calidad significa menos pérdidas pero mayor peso de archivo.'
+        overwrite: "Habilita la sobreescritura de archivos en la carpeta de salida."
+
+  # shell reports - main routine
+  main:
+
+    input_options: 'Opciones de entrada:'
+
+    recursive: 
+      enabled:  'Búsqueda recursiva habilitada'
+      disabled: 'Búsqueda simple habilitada'
+
+    search:
+      start:  'Buscando...'
+      end:    'Imágenes encontradas:'
+      folder: 'Carpeta de origen:'
+      ext:    'Extensión de imagen:'
+
+    images:
+      intro: 'Convirtiendo imágenes desde la entrada:'
+      input: 'Imágenes provistas:'
+
+    output:
+      section: 'Opciones de salida:'
+      folder:
+        create: 'Creando carpeta de destino:'
+        exists: 'La carpeta de destino ya existe:'
+      ext: 'Extensión de la imagen de salida:'
+
+    keep_tree:
+      enabled: "Manteniendo la organización de carpetas en la salida."
+      disabled: "Todas las imágenes de salida en la carpeta de salida."
+
+    overwrite:
+      enabled: "Sobreescritura de salida habilitada"
+      disabled: "Sobreescritura de salida no permitida"
+      repeated: "Imágenes encontradas a la salida:"
+      pending:  "Imágenes a convertir:"
+
+    results:
+      time:      "Tiempo transcurrido: %{segs} segundos"
+      cancelled: "No se encontraron imágenes sin convertir - Cancelado"
