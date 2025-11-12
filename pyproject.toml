@@ -3,13 +3,13 @@ name = "image-converter"
 version = "1.6.0"
 description = "Single CLI tool to convert and compress images from folders or lists."
 authors = [
-    {name = "Alejrot"}
+    {name = "Marcelo Marot Rosas"}
 ]
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10, <3.15"
 dependencies = [
-    "pillow (>=11.2.1,<12.0.0)",
+    "pillow (>=12.0.0,<13.0.0)",
     "rich (>=14.0.0,<15.0.0)",
     "python-i18n[yaml] (>=0.3.9,<0.4.0)"
 ]
