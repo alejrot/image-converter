@@ -1,7 +1,7 @@
 [project]
 name = "image-converter"
 version = "1.6.0"
-description = ""
+description = "Single CLI tool to convert and compress images from folders or lists."
 authors = [
     {name = "Alejrot"}
 ]
