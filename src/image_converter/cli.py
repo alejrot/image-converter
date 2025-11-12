@@ -14,13 +14,13 @@ from .paths import ext_search, relocate_path, images_ext
 from .lang import lang
 
 
-
-def processed_bar(total_count:int):
+def processed_bar(total_count: int):
     """Shows a progress bar showing how many images were processed."""
     # global processed_counter
     with Progress() as progress:
-
-        task = progress.add_task(f"[green]{lang.t('shell.main.search.start')}", total=total_count)
+        task = progress.add_task(
+            f"[green]{lang.t('shell.main.search.start')}", total=total_count
+        )
 
         while not progress.finished:
             # bar remains blocked until a new image is converted
@@ -32,7 +32,7 @@ def processed_bar(total_count:int):
             processed_event.clear()
 
 
-def cli_process(args: ArgumentParser)->bool:
+def cli_process(args: ArgumentParser) -> bool:
     """Image search, delivery and parallel processing in the same function.
     Returns 'True' if images were found, counter case returns 'False'"""
 
@@ -53,7 +53,7 @@ def cli_process(args: ArgumentParser)->bool:
     src_ext: str = args.src_ext
 
     src_dir = str(Path(src_dir).expanduser())
-    
+
     # image list
     src_list: list[str] = args.src_images
 
@@ -67,7 +67,6 @@ def cli_process(args: ArgumentParser)->bool:
     print(f"[green]{lang.t('shell.main.input_options')}")
 
     if src_list is None or len(src_list) == 0:
-
         if recursive:
             print(f"[yellow]{lang.t('shell.main.recursive.enabled')}")
         else:
@@ -77,29 +76,21 @@ def cli_process(args: ArgumentParser)->bool:
 
         print(f"[blue]{lang.t('shell.main.search.ext')} [yellow]{src_ext}")
 
-
         # search for images to convert
         src_paths = []
         nro_images = 0
 
         with Progress() as progress:
-
             task_bar = progress.add_task(
-                f"[green]{lang.t('shell.main.search.start')}",
-                total=100,
-                start=False
-                )
+                f"[green]{lang.t('shell.main.search.start')}", total=100, start=False
+            )
 
             if src_ext.upper() == "ALL":
                 exts = deepcopy(images_ext)
                 for ext in exts:
-                    src_paths.extend(
-                        ext_search(src_dir, ext, recursive)
-                    )
+                    src_paths.extend(ext_search(src_dir, ext, recursive))
             else:
-                src_paths.extend(
-                    ext_search(src_dir, src_ext, recursive)
-                )
+                src_paths.extend(ext_search(src_dir, src_ext, recursive))
 
             progress.update(task_bar, completed=100)
             src_paths = list(src_paths)
@@ -110,7 +101,7 @@ def cli_process(args: ArgumentParser)->bool:
             return False
 
         print(f"[green]{lang.t('shell.main.output.section')}")
-        
+
         if keep_tree:
             print(f"[yellow]{lang.t('shell.main.keep_tree.enabled')}")
             src_folder = Path(src_dir)
@@ -133,11 +124,9 @@ def cli_process(args: ArgumentParser)->bool:
         print(f"[blue]{lang.t('shell.main.keep_tree.disabled')}")
         src_folder = None
 
-
     print(f"[blue]{lang.t('shell.main.output.ext')} [yellow]{dst_ext}")
 
     if not overwrite:
-
         # discarding paths of images already converted or preexistent in output
         print(f"[yellow]{lang.t('shell.main.overwrite.disabled')}")
 
@@ -145,7 +134,6 @@ def cli_process(args: ArgumentParser)->bool:
         unconverted_images = []
 
         for src_image in src_paths:
-
             output_image = relocate_path(src_image, dst_dir, dst_ext, src_folder)
 
             if output_image.exists():
@@ -154,7 +142,9 @@ def cli_process(args: ArgumentParser)->bool:
             else:
                 unconverted_images.append(src_image)
 
-        print(f"[blue]{lang.t('shell.main.overwrite.repeated')} [yellow]{discarded_counter}")
+        print(
+            f"[blue]{lang.t('shell.main.overwrite.repeated')} [yellow]{discarded_counter}"
+        )
 
         src_paths = unconverted_images
         nro_images = len(src_paths)
@@ -174,26 +164,18 @@ def cli_process(args: ArgumentParser)->bool:
 
     else:
         print(f"[blue]{lang.t('shell.main.output.folder.create')} [yellow]{dst_dir}")
-        Path(dst_dir).mkdir(
-            parents=True
-            )
+        Path(dst_dir).mkdir(parents=True)
 
     # the progress  bar has its own thread
     bar_thread = Thread(
         target=processed_bar,
-        args  =(len(src_paths),),
-        )
+        args=(len(src_paths),),
+    )
 
     bar_thread.start()
 
     # image delivery in multiple threads
     # it also shows progress bar
-    image_threads(
-        src_paths,
-        dst_dir,
-        dst_ext,
-        src_folder,
-        quality
-        )
+    image_threads(src_paths, dst_dir, dst_ext, src_folder, quality)
 
     return True

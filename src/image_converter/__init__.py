@@ -14,7 +14,7 @@ from .consts import ConfigKeys
 from .cli import cli_process
 
 
-__version__ = '1.6.0'
+__version__ = "1.6.0"
 
 
 __all__ = [
@@ -25,7 +25,7 @@ __all__ = [
     "ext_search",
     "relocate_path",
     "processed_counter",
-    "processed_event", 
+    "processed_event",
     "reading_json",
     "writing_json",
     "find_json",
@@ -39,7 +39,7 @@ __all__ = [
 
 
 def main():
-    """Wrapper used """
+    """Wrapper used"""
 
     parser.version = __version__
 
@@ -52,9 +52,8 @@ def main():
 
     if images_found is True:
         # print(f"Elapsed time: {(end-start)*1000 :7.6} mseg")
-        time_seg = f"{(end-start):5.3}"
+        time_seg = f"{(end - start):5.3}"
         print(f"{lang.t('shell.main.results.time', segs=time_seg)}")
 
     else:
         print(f"{lang.t('shell.main.results.cancelled')}")
-

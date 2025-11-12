@@ -3,13 +3,7 @@
 py -m nombre_modulo
 """
 
-
 if __name__ == "__main__":
-
     print("Me ejecuto como módulo.")
     print("Invócame:")
     print("py -m src")
-
-
-
-
