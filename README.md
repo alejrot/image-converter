@@ -13,26 +13,51 @@ Some of the implemented features:
 
 - format extension selectable by user;
 - single and recursive folder exploration;
-- cloned subfolder tree and organization in output;
+- cloned subfolder tree and organization in output (optional);
 - compression adjustable by user;
+- parallel processing;
+- Help and console reports in English and Spanish;
 - 4th image channel (*albedo*) erasing (by *default*).
-
 
 ## Requirements
 
-- Python 3
-- Bash or equivalent shell.
+- Python 3.10 or higher;
+- Bash or equivalent shell;
+- [UV environment manager](https://docs.astral.sh/uv/).
 
 
 ## Installation
 
+Clone the repository and execute via UV:
 
+```bash
+git clone git@github.com:alejrot/image-converter.git
+cd image-converter
+uv run image-converter -v   # install and tag version return
+``` 
+
+<!-- 
+In Bash an alias can be created.
+The command path is found by:
+
+```bash
+uv run which image-converter
+``` 
+and the alias is created
+in the `.bashrc` file (in Linux) add:
+
+```bash
+alias image-converter=CLI_PATH
+alias image-converter=`uv run which image-converter` 
+```
+-->
+
+
+<!-- 
 <details>
 <summary>
 Windows
 </summary>
-
-
 
 ```bash
 python -m venv .venv
@@ -53,6 +78,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 </details>
+-->
 
 
 ## Usage and options
@@ -60,7 +86,7 @@ pip install -r requirements.txt
 So far it's can only be used with Python interpreter:
 
 ```bash
-py main.py <arguments> 
+uv run image-converter --option value
 ```
 
 <details>
@@ -73,11 +99,10 @@ The easier way to work is searching images by file extension in a specified fold
 
 |short | long | explanation | default value|
 |---|----|---|---|
-|`-sf`|`--src-folder`| source folder's path|`.` |
-|`-se`|`--src-ext`| source image's extension|`ALL`|
+|`-sf`|`--src-folder`| source folder's path|`.` (current folder) |
+|`-se`|`--src-ext`| source image's extension|`ALL` (any allowed format)|
 |`-r`|`--recursive`| recursive image search in source folder | disabled |
 
-`ALL` or `all` wildcard enables image searching of any allowed format.
 The alternative way by a list of image paths, in that case the other input options are disabled.
 
 |short | long | explanation | 
@@ -96,7 +121,7 @@ The available options for output images are:
 
 |short | long | explanation | default value| 
 |---|----|---|---|
-|`-df`|`--dst-folder`|destination folder's path|`converted-images` folder inside user directory |
+|`-df`|`--dst-folder`|destination folder's path|`converted-images` folder (inside user folder) |
 |`-de`|`--dst-ext`|destination image's extension|`.jpg`|
 |`-k`|`--keep-tree`| keep input folder's tree at output (only for recursive search)| disabled |
 |`-o`|`--overwrite`| Forces conversion if output images already exists | disabled |
@@ -132,18 +157,18 @@ Command line help:
 </summary>
 
 ```bash
-python main.py --help
+uv run image-converter -h
 ```
 </details>
 
 
 <details>
 <summary>
-Converting particular images to JPG - all to same folder:
+Converting particular images to JPG - all to `output` folder:
 </summary>
 
 ```bash
-python main.py --src-image img1.webp img2.png ... --dst-folder output/ 
+uv run image-converter -si img1.webp img2.png ... --df output/ 
 ```
 
 
@@ -155,7 +180,7 @@ Recursive search of WEBP images - keeping folder structure:
 </summary>
 
 ```bash
-python main.py --src-folder examples/ --dst-folder output/ -r -k
+uv run image-converter --sf examples/ --df output/ -r -k
 ```
 </details>
 
@@ -165,7 +190,7 @@ Adding image compression to output images:
 </summary>
 
 ```bash
-python main.py --src-folder examples/ --dst-folder output/ -r -k --quality 50 
+uv run image-converter -sf examples/ -df output/ -r -k -q 50 
 ```
 </details>
 
@@ -175,13 +200,15 @@ Single search - input BMP images, output images as PNG:
 </summary>
 
 ```bash
-python main.py --src-folder examples/ --dst-folder output/  -src-ext .bmp  -dst-ext .png  
+uv run image-converter -sf examples/ -df output/ -se .bmp  -dst-ext .png
 ```
 </details>
 
 
 ## Appendix: image formats
 
+Some of the most used extensions
+are brieftly reviewed here.
 
 ### JPG
 
@@ -190,8 +217,8 @@ Some of its properties:
  
 - lossy format image;
 - supports image compression;
-- widely used and highly compatibility.
-
+- widely used and highly compatible.
+- 3 channels image: red, green and blue.
 
 ### PNG
 
@@ -202,7 +229,7 @@ Some of its properties:
 - lossless format image;
 - doesn't support image compression;
 - supports 4th channel image (*albedo*).
-- widely used and highly compatibility.
+- widely used and highly compatible.
 
 **Warning:** PNG diagrams could be degraded when are converted to other formats,
 specially colours could be changed.
@@ -217,8 +244,10 @@ Some of its properties:
 - better quality image and lower space disk than JPG at high compression rates (*lossy*);
 - lower image size than PNG with *lossless* compression - around 25% less;
 - supports 4th channel image (*albedo*).
-- not so extended use and compatibility as JPG and PNG but rising.
+- not so extended use and lower compatibility than JPG and PNG.
 
 
-This program **only does lossy** compression during conversion.
+This program 
+**only does lossy compression**
+during conversion.
 
