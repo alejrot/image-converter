@@ -49,6 +49,7 @@ en:
 
     output:
       section: 'Output options:'
+      start:  'Processing...'
       folder:
         create: 'Creating destination folder:'
         exists: 'Destination folder already exists:'

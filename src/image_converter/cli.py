@@ -19,7 +19,7 @@ def processed_bar(total_count: int):
     # global processed_counter
     with Progress() as progress:
         task = progress.add_task(
-            f"[green]{lang.t('shell.main.search.start')}", total=total_count
+            f"[green]{lang.t('shell.main.output.start')}", total=total_count
         )
 
         while not progress.finished:

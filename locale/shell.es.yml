@@ -49,6 +49,7 @@ es:
 
     output:
       section: 'Opciones de salida:'
+      start:  'Procesando...'
       folder:
         create: 'Creando carpeta de destino:'
         exists: 'La carpeta de destino ya existe:'
