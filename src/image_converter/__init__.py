@@ -52,7 +52,7 @@ def main():
 
     if images_found is True:
         # print(f"Elapsed time: {(end-start)*1000 :7.6} mseg")
-        time_seg = f"{(end - start):5.3}"
+        time_seg = f"{(end - start):6.4}"
         print(f"{lang.t('shell.main.results.time', segs=time_seg)}")
 
     else:

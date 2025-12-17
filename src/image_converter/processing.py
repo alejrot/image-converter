@@ -1,10 +1,7 @@
 """This module is the responsible of converting images in different threads."""
 
-from threading import Thread
 from multiprocessing import Value, Event, Lock
-
-# from os import process_cpu_count
-from os import cpu_count
+from concurrent.futures import ThreadPoolExecutor
 
 # project code
 from .paths import relocate_path
@@ -19,6 +16,7 @@ folder_lock = Lock()
 
 processed_counter = Value("i", 0)
 processed_event = Event()
+
 
 
 def convert_image(src_path, dst_path, quality: int = 95):
@@ -45,7 +43,7 @@ def convert_image(src_path, dst_path, quality: int = 95):
                 # print(f"Image: {src_path} - transparency channel discarded")
             else:
                 print(
-                    f"[bold red]Image: [bold yellow]{src_path} [red]- unsupported image"
+                    f"[bold red]Image: [bold yellow]{src_path} [red] - unsupported image"
                 )
 
     finally:
@@ -59,7 +57,8 @@ def image_threads(
 ):
     """This task creates a thread for each image to convert and awaits until finish."""
 
-    threads_list = []
+    # thread pool for processing tasks
+    executor = ThreadPoolExecutor()
 
     for src_path in src_paths:
         # creating destiny path
@@ -74,31 +73,13 @@ def image_threads(
         folder_lock.release()
 
         # converting images in parallel
-        args = (
+        executor.submit(
+            convert_image,
             src_path,
             dst_path,
             quality,
-        )
-        conv_thread = Thread(target=convert_image, args=args)
+            )
 
-        conv_thread.start()
-        threads_list.append(conv_thread)
+    # threads pool close
+    executor.shutdown()
 
-        # limit maximum parallell threads
-        # n_threads = process_cpu_count()
-        n_threads = cpu_count()
-        if n_threads is None:
-            n_threads = 1
-
-        if len(threads_list) > n_threads:
-            # awaits until first thread end and discards it
-            thread = threads_list[0]
-            thread.join()
-            threads_list.remove(thread)
-            # if other threads have ended they are discarded too
-            alive_obj = filter(lambda x: x.is_alive(), threads_list)
-            threads_list = list(alive_obj)
-
-    # awaits for all image conversion's end
-    for thread in threads_list:
-        thread.join()
