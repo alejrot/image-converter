@@ -1,5 +1,5 @@
 """This module is the responsible of converting images in different threads."""
-
+from pathlib import Path
 from multiprocessing import Value, Event, Lock
 from concurrent.futures import ThreadPoolExecutor
 
@@ -23,33 +23,64 @@ def convert_image(src_path, dst_path, quality: int = 95):
     """This thread saves the source image in the destiny path after its conversion.
     Quality is a percentage that defines compression: a high percentage means minimal quality loss.
     If source image is 4-channel (RGBA) then the output will be converted to 3-channel (RGB).
+    If source image has more of a frame then the output wil be cloned.
     """
 
     try:
         # RGB and monochrome images are converted directly
         with Image.open(src_path) as im:
-            im.save(dst_path, quality=quality)
 
-    except Exception:
-        # RGBA saving throws exception
-        with Image.open(src_path) as im:
-            # RGBA images are converted deleting transparency channel
             source = im.split()
+            # print(f"channels: {len(source)}, mode: {im.mode}, image: {src_path}")
+            
+            if hasattr(im, 'n_frames'):
+                # animated images are NOT compressed
+                if im.n_frames > 1:
+                    # images are only copied
+                    bytes_string = Path(src_path).read_bytes()
+                    Path(dst_path).write_bytes(bytes_string)
+                    del bytes_string, source
+                    print(f"[bold yellow]Image: [green]{src_path} [bold yellow] is multiframe image - not converted")
+                    return
+                
             if len(source) == 4:
-                # A channel discarded
+                # Albedo ('a') channel discarded
                 r, g, b, _ = source
                 im = Image.merge("RGB", (r, g, b))
                 im.save(dst_path, quality=quality)
                 # print(f"Image: {src_path} - transparency channel discarded")
+                del r, g, b, _
+                del source
+                return
+
+            #  1-channel images case
+            elif len(source) == 1:
+                # print(f"[bold cyan]    1 channel image ")
+                im.save(dst_path, quality=quality)
+                del source
+                return
+
+            #  3-channel images case
             else:
-                print(
-                    f"[bold red]Image: [bold yellow]{src_path} [red] - unsupported image"
-                )
+                im.save(dst_path, quality=quality)
+                del source
+                return
+
+
+    except Exception as exception_message:
+
+        # RGBA saving throws exception
+        print(f"[bold red]Exception: {exception_message}")
+        print(f"[bold red]Image: [bold yellow]{src_path}")
+        print(f"[bold red]Mode:  [bold yellow]{im.mode}")
+        return
+
 
     finally:
         # Orders the progress bar counter and update it
         processed_counter.value += 1
         processed_event.set()
+        return
 
 
 def image_threads(
